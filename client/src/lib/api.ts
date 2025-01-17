@@ -48,33 +48,27 @@ export const loyaltyApi = {
     try {
       console.log('Attempting to modify URL:', originalUrl);
 
-      const response = await axios.post('https://ModificarUrlWalletClub.replit.app/modifyUrl', {
-        url: originalUrl
-      }, {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        timeout: 10000 // 10 second timeout
+      // Simplificar la llamada, solo enviar la URL en el body
+      const response = await fetch('https://ModificarUrlWalletClub.replit.app/modifyUrl', {
+        method: 'POST',
+        body: JSON.stringify({ url: originalUrl })
       });
 
-      console.log('URL modification response:', response.data);
+      if (!response.ok) {
+        throw new Error('Error en la respuesta del servicio');
+      }
 
-      if (!response.data?.url) {
+      const data = await response.json();
+      console.log('URL modification response:', data);
+
+      if (!data?.url) {
         throw new Error('La respuesta no contiene una URL válida');
       }
 
-      return response.data.url;
+      return data.url;
     } catch (error) {
       console.error('Error modifying URL:', error);
-      if (axios.isAxiosError(error)) {
-        if (error.code === 'ECONNABORTED') {
-          throw new Error('Tiempo de espera agotado al procesar la URL');
-        }
-        if (!error.response) {
-          throw new Error('No se pudo conectar al servicio de modificación de URL');
-        }
-      }
-      throw new Error('Error al procesar la URL de instalación');
+      throw new Error('No se pudo conectar al servicio de modificación de URL');
     }
   }
 };
