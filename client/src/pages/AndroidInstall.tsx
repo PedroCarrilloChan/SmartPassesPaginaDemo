@@ -41,7 +41,10 @@ export default function AndroidInstall() {
         setAndroidUrl(androidLink);
       } catch (error) {
         console.error('Failed to process Android URL:', error);
-        const errorMessage = error instanceof Error ? error.message : "Error al procesar la URL de instalación";
+        const errorMessage = error instanceof Error 
+          ? error.message 
+          : "Error al procesar la URL de instalación";
+
         setError(errorMessage);
         toast({
           variant: "destructive",
@@ -56,7 +59,11 @@ export default function AndroidInstall() {
     if (loyaltyData && !androidUrl && !isProcessing) {
       processUrl();
     }
-  }, [loyaltyData, toast]);
+  }, [loyaltyData, androidUrl, toast]);
+
+  const handleRetry = () => {
+    setAndroidUrl(""); // Esto provocará que useEffect intente procesar la URL nuevamente
+  };
 
   if (isDataLoading) {
     return (
@@ -103,34 +110,36 @@ export default function AndroidInstall() {
           </div>
 
           <p className="text-center">
-            Perfecto {loyaltyData?.firstName} 🙂
-          </p>
-
-          <p className="text-center">
             ¡Para iniciar la instalación, simplemente haz clic en el botón de abajo! 👇
           </p>
 
-          <Button 
-            className="w-full"
-            disabled={isProcessing || !androidUrl}
-            onClick={() => androidUrl && window.open(androidUrl, '_blank')}
-          >
-            {isProcessing ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Procesando...
-              </>
-            ) : error ? (
-              "Error al procesar la URL"
-            ) : (
-              "Obtener mi tarjeta"
-            )}
-          </Button>
-
-          {error && (
-            <p className="text-sm text-destructive text-center">
-              {error}. Por favor, inténtelo de nuevo más tarde.
-            </p>
+          {error ? (
+            <div className="space-y-4">
+              <p className="text-sm text-destructive text-center">
+                {error}
+              </p>
+              <Button 
+                className="w-full"
+                onClick={handleRetry}
+              >
+                Intentar nuevamente
+              </Button>
+            </div>
+          ) : (
+            <Button 
+              className="w-full"
+              disabled={isProcessing || !androidUrl}
+              onClick={() => androidUrl && window.open(androidUrl, '_blank')}
+            >
+              {isProcessing ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Procesando...
+                </>
+              ) : (
+                "Obtener mi tarjeta"
+              )}
+            </Button>
           )}
         </CardContent>
       </Card>

@@ -49,15 +49,12 @@ export const loyaltyApi = {
         throw new Error('URL original es requerida');
       }
 
-      // Encontrar la posición del símbolo '?' si existe
       const queryIndex = originalUrl.indexOf('?');
 
       let modifiedUrl = '';
       if (queryIndex !== -1) {
-        // Si hay parámetros de consulta, insertar .pkpass antes del '?'
         modifiedUrl = originalUrl.slice(0, queryIndex) + '.pkpass' + originalUrl.slice(queryIndex);
       } else {
-        // Si no hay parámetros de consulta, simplemente agregar .pkpass al final
         modifiedUrl = originalUrl + '.pkpass';
       }
 
@@ -78,15 +75,23 @@ export const loyaltyApi = {
 
       console.log('Iniciando request para Android con URL:', wcModifiedUrl);
 
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
       const response = await fetch('https://android-instalacion-automatica-onlinemidafilia.replit.app/generateLink', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'Origin': window.location.origin
         },
         body: JSON.stringify({
           originalLink: wcModifiedUrl
-        })
+        }),
+        signal: controller.signal,
+        mode: 'cors'
+      }).finally(() => {
+        clearTimeout(timeoutId);
       });
 
       console.log('Response status:', response.status);
@@ -110,6 +115,12 @@ export const loyaltyApi = {
     } catch (error) {
       console.error('Error detallado al generar link para Android:', error);
       if (error instanceof Error) {
+        if (error.name === 'AbortError') {
+          throw new Error('La solicitud tomó demasiado tiempo. Por favor, inténtelo de nuevo.');
+        }
+        if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+          throw new Error('No se pudo conectar al servidor de Android. Por favor, verifique su conexión e inténtelo de nuevo.');
+        }
         throw new Error(`Error al generar link para Android: ${error.message}`);
       }
       throw new Error('Error inesperado al generar link para Android');
