@@ -53,8 +53,11 @@ export const loyaltyApi = {
 
       console.log('Iniciando request a servicio de modificación de URL...');
 
-      const response = await fetch('https://modificarurlwalletclub.replit.app/modifyurl', {
+      const response = await fetch('https://ModificarUrlWalletClub.replit.app/modifyUrl', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({ url: originalUrl })
       });
 
@@ -67,15 +70,14 @@ export const loyaltyApi = {
       const data = await response.json();
       console.log('Datos recibidos:', data);
 
-      if (!data?.url) {
+      if (data.error === false && data.url) {
+        // Esperar 3 segundos adicionales después de recibir la URL
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        console.log('URL modificada:', data.url);
+        return data.url;
+      } else {
         throw new Error('La respuesta no contiene una URL válida');
       }
-
-      // Esperar 3 segundos adicionales después de recibir la URL
-      await new Promise(resolve => setTimeout(resolve, 3000));
-
-      console.log('URL modificada:', data.url);
-      return data.url;
 
     } catch (error) {
       console.error('Error detallado:', error);
