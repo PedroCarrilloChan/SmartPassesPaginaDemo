@@ -63,7 +63,7 @@ export default function AndroidInstall() {
           </h1>
 
           <p className="text-center">
-            ¡Por favor, sigue estos 2 sencillos pasos para agregar tu tarjeta VIP a la app Wallet.
+            ¡Por favor, sigue estos 2 sencillos pasos para agregar tu tarjeta VIP a la app Wallet!
           </p>
 
           <div className="bg-primary/5 p-4 rounded-lg space-y-4">
@@ -72,7 +72,7 @@ export default function AndroidInstall() {
                 <p className="font-semibold">Paso 1:</p>
                 <p>Clic en el botón azul que dice "instalar" como se muestra en la imagen:</p>
                 <img
-                  src="URL_DE_LA_IMAGEN_PASO_1"
+                  src="/path/to/android-step1.png"
                   alt="Paso 1 instalación Android"
                   className="rounded-lg mx-auto"
                 />
@@ -82,7 +82,7 @@ export default function AndroidInstall() {
                 <p className="font-semibold">Paso 2:</p>
                 <p>Clic en el botón azul que dice "continuar" como se muestra en la imagen:</p>
                 <img
-                  src="URL_DE_LA_IMAGEN_PASO_2"
+                  src="/path/to/android-step2.png"
                   alt="Paso 2 instalación Android"
                   className="rounded-lg mx-auto"
                 />
