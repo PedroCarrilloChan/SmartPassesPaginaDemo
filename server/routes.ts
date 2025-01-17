@@ -11,7 +11,10 @@ export function registerRoutes(app: Express): Server {
       const { firstName, lastName, email, phone } = req.body;
 
       if (!firstName || !lastName || !email || !phone) {
-        return res.status(400).json({ error: 'Missing required fields' });
+        return res.status(400).json({ 
+          success: false,
+          error: 'Missing required fields' 
+        });
       }
 
       const response = await fetch('https://pass.walletclub.io/api/v1/loyalty/programs/5365264793468928/customers', {
@@ -38,8 +41,17 @@ export function registerRoutes(app: Express): Server {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Wallet Club API error:', errorText);
+        const errorData = await response.json();
+        console.error('Wallet Club API error:', errorData);
+
+        // Check for specific error types
+        if (errorData.errors?.some(error => error.field === 'phone' && error.reasons.includes('Phone number already taken'))) {
+          return res.status(400).json({
+            success: false,
+            error: 'Este número de teléfono ya está registrado'
+          });
+        }
+
         throw new Error('Failed to register with loyalty program');
       }
 
@@ -48,7 +60,10 @@ export function registerRoutes(app: Express): Server {
       res.json({ success: true });
     } catch (error) {
       console.error('Registration error:', error);
-      res.status(500).json({ error: 'Registration failed' });
+      res.status(500).json({ 
+        success: false,
+        error: 'Error en el registro. Por favor intente nuevamente.' 
+      });
     }
   });
 

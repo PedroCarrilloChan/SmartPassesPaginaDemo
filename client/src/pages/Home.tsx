@@ -31,8 +31,10 @@ export default function Home() {
         body: JSON.stringify(data)
       });
 
-      if (!response.ok) {
-        throw new Error('Registration failed');
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Registration failed');
       }
 
       navigate('/loading');
@@ -40,7 +42,7 @@ export default function Home() {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to register. Please try again."
+        description: error instanceof Error ? error.message : "Error en el registro. Por favor intente nuevamente."
       });
     }
   }
