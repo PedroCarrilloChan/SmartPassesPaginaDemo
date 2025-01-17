@@ -6,6 +6,7 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import Loading from "@/pages/Loading";
 import ThankYou from "@/pages/ThankYou";
+import IphoneInstall from "@/pages/IphoneInstall";
 
 function Router() {
   return (
@@ -13,6 +14,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/loading" component={Loading} />
       <Route path="/thank-you" component={ThankYou} />
+      <Route path="/iphone-install" component={IphoneInstall} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -6,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 export default function ThankYou() {
   const [loyaltyData, setLoyaltyData] = useState<any>(null);
   const { toast } = useToast();
+  const [, navigate] = useLocation();
 
   useEffect(() => {
     async function fetchLoyaltyData() {
@@ -52,7 +54,11 @@ export default function ThankYou() {
               <Button className="flex-1 max-w-xs mx-auto" variant="outline">
                 Download for Android
               </Button>
-              <Button className="flex-1 max-w-xs mx-auto" variant="outline">
+              <Button 
+                className="flex-1 max-w-xs mx-auto" 
+                variant="outline"
+                onClick={() => navigate('/iphone-install')}
+              >
                 Download for iPhone
               </Button>
             </div>
