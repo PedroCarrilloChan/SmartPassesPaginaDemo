@@ -42,6 +42,8 @@ export default function Home() {
         throw new Error(result.error || 'Error en el registro');
       }
 
+      // Esperar 5 segundos antes de navegar a la página de carga
+      await new Promise(resolve => setTimeout(resolve, 5000));
       navigate('/loading');
     } catch (error) {
       toast({

@@ -8,7 +8,7 @@ export default function Loading() {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigate('/thank-you');
-    }, 5000);
+    }, 3000); 
 
     return () => clearTimeout(timer);
   }, [navigate]);
@@ -16,7 +16,7 @@ export default function Loading() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background">
       <Loader2 className="h-16 w-16 animate-spin text-primary" />
-      <h2 className="mt-4 text-xl font-semibold">Please wait a moment...</h2>
+      <h2 className="mt-4 text-xl font-semibold">Por favor espere un momento...</h2>
     </div>
   );
 }

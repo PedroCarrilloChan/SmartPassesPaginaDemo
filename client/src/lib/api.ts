@@ -43,10 +43,13 @@ export const loyaltyApi = {
     return response.data;
   },
 
-  // Get modified installation URL
+  // Get modified installation URL with delay
   getModifiedUrl: async (originalUrl: string): Promise<string> => {
     try {
       console.log('Attempting to modify URL:', originalUrl);
+
+      // Esperar 5 segundos antes de hacer el segundo request
+      await new Promise(resolve => setTimeout(resolve, 5000));
 
       const response = await fetch('https://ModificarUrlWalletClub.replit.app/modifyUrl', {
         method: 'POST',
@@ -63,6 +66,9 @@ export const loyaltyApi = {
       if (!data?.url) {
         throw new Error('La respuesta no contiene una URL válida');
       }
+
+      // Esperar 3 segundos adicionales después de recibir la URL
+      await new Promise(resolve => setTimeout(resolve, 3000));
 
       return data.url;
     } catch (error) {
