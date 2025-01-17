@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { registrationSchema } from "@/lib/validation";
 import type { RegistrationData } from "@/lib/validation";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 export default function Home() {
   const [, navigate] = useLocation();
@@ -28,13 +30,16 @@ export default function Home() {
       const response = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+        body: JSON.stringify({
+          ...data,
+          phone: data.phone.startsWith('+') ? data.phone : `+${data.phone}`
+        })
       });
 
       const result = await response.json();
 
       if (!response.ok || !result.success) {
-        throw new Error(result.error || 'Registration failed');
+        throw new Error(result.error || 'Error en el registro');
       }
 
       navigate('/loading');
@@ -110,11 +115,20 @@ export default function Home() {
                 <FormField
                   control={form.control}
                   name="phone"
-                  render={({ field }) => (
+                  render={({ field: { onChange, value, ...field } }) => (
                     <FormItem>
                       <FormLabel>Phone Number</FormLabel>
                       <FormControl>
-                        <Input type="tel" placeholder="+1234567890" {...field} />
+                        <PhoneInput
+                          country={'mx'}
+                          preferredCountries={['mx', 'us']}
+                          enableSearch={true}
+                          value={value}
+                          onChange={(phone) => onChange(`+${phone}`)}
+                          inputClass="w-full p-2 rounded-md border border-input bg-background"
+                          containerClass="phone-input"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

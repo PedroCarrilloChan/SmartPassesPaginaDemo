@@ -45,10 +45,24 @@ export function registerRoutes(app: Express): Server {
         console.error('Wallet Club API error:', errorData);
 
         // Check for specific error types
-        if (errorData.errors?.some(error => error.field === 'phone' && error.reasons.includes('Phone number already taken'))) {
+        if (errorData.errors?.some((error: any) => error.field === 'phone' && error.reasons.includes('Phone number already taken'))) {
           return res.status(400).json({
             success: false,
             error: 'Este número de teléfono ya está registrado'
+          });
+        }
+
+        if (errorData.errors?.some((error: any) => error.field === 'email')) {
+          return res.status(400).json({
+            success: false,
+            error: 'Por favor ingrese un correo electrónico válido'
+          });
+        }
+
+        if (errorData.errors?.some((error: any) => error.field === 'phone')) {
+          return res.status(400).json({
+            success: false,
+            error: 'Por favor ingrese un número de teléfono válido'
           });
         }
 
