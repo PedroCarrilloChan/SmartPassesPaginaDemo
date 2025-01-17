@@ -10,6 +10,7 @@ export default function IphoneInstall() {
   const { toast } = useToast();
   const [modifiedUrl, setModifiedUrl] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const { data: loyaltyData, isLoading: isDataLoading } = useQuery({
     queryKey: ["/api/loyalty-data"],
@@ -21,14 +22,19 @@ export default function IphoneInstall() {
     const processUrl = async () => {
       if (loyaltyData?.card?.url) {
         setIsProcessing(true);
+        setError(null);
         try {
+          console.log('Processing URL for card:', loyaltyData.card.url);
           const newUrl = await loyaltyApi.getModifiedUrl(loyaltyData.card.url);
           setModifiedUrl(newUrl);
         } catch (error) {
+          console.error('Failed to process URL:', error);
+          const errorMessage = error instanceof Error ? error.message : "Error al procesar la URL de instalación";
+          setError(errorMessage);
           toast({
             variant: "destructive",
             title: "Error",
-            description: error instanceof Error ? error.message : "Error al procesar la URL de instalación"
+            description: errorMessage
           });
         } finally {
           setIsProcessing(false);
@@ -72,17 +78,25 @@ export default function IphoneInstall() {
           <Button 
             className="w-full"
             disabled={isProcessing || !modifiedUrl}
-            onClick={() => window.open(modifiedUrl, '_blank')}
+            onClick={() => modifiedUrl && window.open(modifiedUrl, '_blank')}
           >
             {isProcessing ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Procesando...
               </>
+            ) : error ? (
+              "Error al procesar la URL"
             ) : (
               "Obtener mi tarjeta"
             )}
           </Button>
+
+          {error && (
+            <p className="text-sm text-destructive text-center">
+              {error}. Por favor, inténtelo de nuevo más tarde.
+            </p>
+          )}
         </CardContent>
       </Card>
     </div>
