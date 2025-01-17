@@ -11,16 +11,10 @@ export default function IphoneInstall() {
   const [modifiedUrl, setModifiedUrl] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const { data: loyaltyData } = useQuery({
+  const { data: loyaltyData, isLoading: isDataLoading } = useQuery({
     queryKey: ["/api/loyalty-data"],
     queryFn: loyaltyApi.getLoyaltyData,
-    onError: () => {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "No se pudo cargar la información de la tarjeta"
-      });
-    }
+    retry: false
   });
 
   useEffect(() => {
@@ -44,6 +38,14 @@ export default function IphoneInstall() {
     processUrl();
   }, [loyaltyData, toast]);
 
+  if (isDataLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background p-6">
       <Card className="max-w-2xl mx-auto">
@@ -62,8 +64,8 @@ export default function IphoneInstall() {
             </h2>
 
             <ol className="list-decimal pl-6 space-y-4">
-              <li>Pulsa el botón "Obtener mi tarjeta" de abajo</li>
-              <li>A continuación, simplemente haga clic en Añadir como se muestra en la imagen:</li>
+              <li>1️⃣ Pulsa el botón "Obtener mi tarjeta" de abajo</li>
+              <li>2️⃣ A continuación, simplemente haga clic en Añadir como se muestra en la imagen:</li>
             </ol>
           </div>
 
