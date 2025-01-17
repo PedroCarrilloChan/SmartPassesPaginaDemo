@@ -48,7 +48,6 @@ export const loyaltyApi = {
     try {
       console.log('Attempting to modify URL:', originalUrl);
 
-      // Simplificar la llamada, solo enviar la URL en el body
       const response = await fetch('https://ModificarUrlWalletClub.replit.app/modifyUrl', {
         method: 'POST',
         body: JSON.stringify({ url: originalUrl })
