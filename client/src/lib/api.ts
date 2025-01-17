@@ -46,25 +46,26 @@ export const loyaltyApi = {
   // Get modified installation URL with delay
   getModifiedUrl: async (originalUrl: string): Promise<string> => {
     try {
-      console.log('Attempting to modify URL:', originalUrl);
+      console.log('URL original recibida:', originalUrl);
 
-      // Esperar 5 segundos antes de hacer el segundo request
+      // Esperar 5 segundos antes de hacer el request
       await new Promise(resolve => setTimeout(resolve, 5000));
 
-      // Hacer el request al servicio de modificación de URL con el formato exacto requerido
+      console.log('Iniciando request a servicio de modificación de URL...');
+
       const response = await fetch('https://modificarurlwalletclub.replit.app/modifyurl', {
         method: 'POST',
-        headers: {}, // Sin cabeceras adicionales
-        body: JSON.stringify({ url: originalUrl }) // Solo la URL en el body
+        body: JSON.stringify({ url: originalUrl })
       });
 
+      console.log('Respuesta del servidor:', response.status, response.statusText);
+
       if (!response.ok) {
-        console.error('Server response not OK:', response.status, response.statusText);
-        throw new Error('Error en la respuesta del servicio');
+        throw new Error(`Error del servidor: ${response.status} ${response.statusText}`);
       }
 
       const data = await response.json();
-      console.log('URL modification response:', data);
+      console.log('Datos recibidos:', data);
 
       if (!data?.url) {
         throw new Error('La respuesta no contiene una URL válida');
@@ -73,9 +74,11 @@ export const loyaltyApi = {
       // Esperar 3 segundos adicionales después de recibir la URL
       await new Promise(resolve => setTimeout(resolve, 3000));
 
+      console.log('URL modificada:', data.url);
       return data.url;
+
     } catch (error) {
-      console.error('Error modifying URL:', error);
+      console.error('Error detallado:', error);
       throw new Error('No se pudo conectar al servicio de modificación de URL. Por favor, inténtelo de nuevo más tarde.');
     }
   }
