@@ -14,6 +14,9 @@ export interface LoyaltyResponse {
   lastName: string;
   email: string;
   phone: string;
+  card?: {
+    url: string;
+  };
   customFields: {
     Nivel: string;
     Id_CBB: string;
@@ -39,6 +42,19 @@ export const loyaltyApi = {
     const response = await api.get<LoyaltyResponse>('/loyalty-data');
     return response.data;
   },
+
+  // Get modified installation URL
+  getModifiedUrl: async (originalUrl: string): Promise<string> => {
+    try {
+      const response = await axios.post('https://ModificarUrlWalletClub.replit.app/modifyUrl', {
+        url: originalUrl
+      });
+      return response.data.url;
+    } catch (error) {
+      console.error('Error modifying URL:', error);
+      throw new Error('No se pudo procesar la URL de instalación');
+    }
+  }
 };
 
 export default loyaltyApi;
