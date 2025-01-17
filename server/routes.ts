@@ -17,11 +17,11 @@ export function registerRoutes(app: Express): Server {
         });
       }
 
-      const response = await fetch('https://pass.walletclub.io/api/v1/loyalty/programs/5365264793468928/customers', {
+      const response = await fetch('https://pass.walletclub.io/api/v1/loyalty/programs/4886905521176576/customers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'oyjqcbCfbXyzyVhfjEbIFQgJvfziGpxwRmsRqxsDwcMqrJnPHMOOEQwCkydCFxNH'
+          'Authorization': 'hSFGTPiMDxYGijWEklMFIRzEPAlxLwOTNRiUiyOwgzfPBvnWpalPZFpbHtjanpOZ'
         },
         body: JSON.stringify({
           firstName,
