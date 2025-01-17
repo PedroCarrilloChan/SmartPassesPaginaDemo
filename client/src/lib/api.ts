@@ -51,12 +51,17 @@ export const loyaltyApi = {
       // Esperar 5 segundos antes de hacer el segundo request
       await new Promise(resolve => setTimeout(resolve, 5000));
 
-      const response = await fetch('https://ModificarUrlWalletClub.replit.app/modifyUrl', {
+      // Hacer el request al servicio de modificación de URL con el formato exacto requerido
+      const response = await fetch('https://modificarUrlWalletClub.replit.app/modifyUrl', {
         method: 'POST',
-        body: JSON.stringify({ url: originalUrl })
+        headers: {}, // Sin cabeceras adicionales
+        body: JSON.stringify({
+          url: originalUrl // Solo la URL en el body
+        })
       });
 
       if (!response.ok) {
+        console.error('Server response not OK:', response.status, response.statusText);
         throw new Error('Error en la respuesta del servicio');
       }
 
@@ -73,7 +78,7 @@ export const loyaltyApi = {
       return data.url;
     } catch (error) {
       console.error('Error modifying URL:', error);
-      throw new Error('No se pudo conectar al servicio de modificación de URL');
+      throw new Error('No se pudo conectar al servicio de modificación de URL. Por favor, inténtelo de nuevo más tarde.');
     }
   }
 };
