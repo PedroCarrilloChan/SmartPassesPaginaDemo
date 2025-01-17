@@ -11,6 +11,7 @@ export default function AndroidInstall() {
   const [androidUrl, setAndroidUrl] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
 
   const { data: loyaltyData, isLoading: isDataLoading } = useQuery({
     queryKey: ["/api/loyalty-data"],
@@ -39,6 +40,7 @@ export default function AndroidInstall() {
         console.log('Link para Android generado:', androidLink);
 
         setAndroidUrl(androidLink);
+        setRetryCount(0); // Resetear el contador de intentos si es exitoso
       } catch (error) {
         console.error('Failed to process Android URL:', error);
         const errorMessage = error instanceof Error 
@@ -48,7 +50,7 @@ export default function AndroidInstall() {
         setError(errorMessage);
         toast({
           variant: "destructive",
-          title: "Error",
+          title: `Error (Intento ${retryCount + 1})`,
           description: errorMessage
         });
       } finally {
@@ -59,9 +61,10 @@ export default function AndroidInstall() {
     if (loyaltyData && !androidUrl && !isProcessing) {
       processUrl();
     }
-  }, [loyaltyData, androidUrl, toast]);
+  }, [loyaltyData, androidUrl, toast, retryCount]);
 
   const handleRetry = () => {
+    setRetryCount(prev => prev + 1);
     setAndroidUrl(""); // Esto provocará que useEffect intente procesar la URL nuevamente
   };
 
