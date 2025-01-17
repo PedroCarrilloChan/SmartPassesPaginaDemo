@@ -20,30 +20,42 @@ export default function AndroidInstall() {
 
   useEffect(() => {
     const processUrl = async () => {
-      if (loyaltyData?.card?.url) {
-        setIsProcessing(true);
-        setError(null);
-        try {
-          // Primero modificamos la URL original
-          const modifiedUrl = await loyaltyApi.getModifiedUrl(loyaltyData.card.url);
-          // Luego generamos el link especial para Android
-          const androidLink = await loyaltyApi.getAndroidInstallLink(modifiedUrl);
-          setAndroidUrl(androidLink);
-        } catch (error) {
-          console.error('Failed to process Android URL:', error);
-          const errorMessage = error instanceof Error ? error.message : "Error al procesar la URL de instalación";
-          setError(errorMessage);
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: errorMessage
-          });
-        } finally {
-          setIsProcessing(false);
-        }
+      if (!loyaltyData?.card?.url) {
+        setError("No se encontró la URL de la tarjeta");
+        return;
+      }
+
+      setIsProcessing(true);
+      setError(null);
+      try {
+        console.log('Procesando URL para Android:', loyaltyData.card.url);
+
+        // Primero modificamos la URL original
+        const modifiedUrl = await loyaltyApi.getModifiedUrl(loyaltyData.card.url);
+        console.log('URL modificada:', modifiedUrl);
+
+        // Luego generamos el link especial para Android
+        const androidLink = await loyaltyApi.getAndroidInstallLink(modifiedUrl);
+        console.log('Link para Android generado:', androidLink);
+
+        setAndroidUrl(androidLink);
+      } catch (error) {
+        console.error('Failed to process Android URL:', error);
+        const errorMessage = error instanceof Error ? error.message : "Error al procesar la URL de instalación";
+        setError(errorMessage);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: errorMessage
+        });
+      } finally {
+        setIsProcessing(false);
       }
     };
-    processUrl();
+
+    if (loyaltyData && !androidUrl && !isProcessing) {
+      processUrl();
+    }
   }, [loyaltyData, toast]);
 
   if (isDataLoading) {

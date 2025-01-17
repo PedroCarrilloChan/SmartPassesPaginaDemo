@@ -45,6 +45,10 @@ export const loyaltyApi = {
     try {
       console.log('URL original recibida:', originalUrl);
 
+      if (!originalUrl) {
+        throw new Error('URL original es requerida');
+      }
+
       // Encontrar la posición del símbolo '?' si existe
       const queryIndex = originalUrl.indexOf('?');
 
@@ -62,13 +66,17 @@ export const loyaltyApi = {
 
     } catch (error) {
       console.error('Error al modificar la URL:', error);
-      throw new Error('Error al procesar la URL. Por favor, inténtelo de nuevo más tarde.');
+      throw error;
     }
   },
 
   getAndroidInstallLink: async (wcModifiedUrl: string): Promise<string> => {
     try {
-      console.log('Generando link para Android con URL:', wcModifiedUrl);
+      if (!wcModifiedUrl) {
+        throw new Error('URL modificada es requerida');
+      }
+
+      console.log('Iniciando request para Android con URL:', wcModifiedUrl);
 
       const response = await fetch('https://android-instalacion-automatica-onlinemidafilia.replit.app/generateLink', {
         method: 'POST',
@@ -82,7 +90,7 @@ export const loyaltyApi = {
       });
 
       console.log('Response status:', response.status);
-      console.log('Response headers:', response.headers);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -94,14 +102,17 @@ export const loyaltyApi = {
       console.log('Response data:', data);
 
       if (!data?.passwalletLink) {
-        throw new Error('No se recibió un link válido para Android');
+        throw new Error('No se recibió un link válido del servidor de Android');
       }
 
       return data.passwalletLink;
 
     } catch (error) {
       console.error('Error detallado al generar link para Android:', error);
-      throw new Error('No se pudo generar el link para Android. Por favor, inténtelo de nuevo más tarde.');
+      if (error instanceof Error) {
+        throw new Error(`Error al generar link para Android: ${error.message}`);
+      }
+      throw new Error('Error inesperado al generar link para Android');
     }
   }
 };
