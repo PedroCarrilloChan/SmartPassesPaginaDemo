@@ -10,6 +10,7 @@ import { registrationSchema } from "@/lib/validation";
 import type { RegistrationData } from "@/lib/validation";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import { config } from "@/config";
 
 export default function Home() {
   const [, navigate] = useLocation();
@@ -42,7 +43,6 @@ export default function Home() {
         throw new Error(result.error || 'Error en el registro');
       }
 
-      // Esperar 5 segundos antes de navegar a la página de carga
       await new Promise(resolve => setTimeout(resolve, 5000));
       navigate('/loading');
     } catch (error) {
@@ -62,15 +62,25 @@ export default function Home() {
           alt="Restaurant interior"
           className="absolute inset-0 w-full h-full object-cover opacity-30"
         />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-primary">Join Our Loyalty Program</h1>
+        <div className="absolute inset-0 flex items-center justify-center flex-col space-y-6">
+          {/* Logo circular con sombra */}
+          <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-white shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
+            <img
+              src={config.branding.logoUrl || "https://via.placeholder.com/200"}
+              alt={config.branding.name}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary text-center px-4">
+            Únete a Nuestro Programa VIP
+          </h1>
         </div>
       </div>
 
       <div className="flex-1 container max-w-lg mx-auto px-4 py-8">
-        <Card className="w-full">
-          <CardHeader>
-            <CardTitle>Registration</CardTitle>
+        <Card className="w-full transform hover:shadow-lg transition-all duration-300">
+          <CardHeader className="text-center">
+            <CardTitle>Registro</CardTitle>
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -80,9 +90,9 @@ export default function Home() {
                   name="firstName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>First Name</FormLabel>
+                      <FormLabel>Nombre</FormLabel>
                       <FormControl>
-                        <Input placeholder="John" {...field} />
+                        <Input placeholder="Juan" {...field} className="h-11" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -93,9 +103,9 @@ export default function Home() {
                   name="lastName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Last Name</FormLabel>
+                      <FormLabel>Apellido</FormLabel>
                       <FormControl>
-                        <Input placeholder="Doe" {...field} />
+                        <Input placeholder="Pérez" {...field} className="h-11" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -106,9 +116,14 @@ export default function Home() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>Correo Electrónico</FormLabel>
                       <FormControl>
-                        <Input type="email" placeholder="john@example.com" {...field} />
+                        <Input 
+                          type="email" 
+                          placeholder="juan@ejemplo.com" 
+                          {...field} 
+                          className="h-11"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -119,7 +134,7 @@ export default function Home() {
                   name="phone"
                   render={({ field: { onChange, value, ...field } }) => (
                     <FormItem>
-                      <FormLabel>Phone Number</FormLabel>
+                      <FormLabel>Número de Teléfono</FormLabel>
                       <FormControl>
                         <PhoneInput
                           country={'mx'}
@@ -127,7 +142,7 @@ export default function Home() {
                           enableSearch={true}
                           value={value}
                           onChange={(phone) => onChange(`+${phone}`)}
-                          inputClass="w-full p-2 rounded-md border border-input bg-background"
+                          inputClass="w-full p-2 rounded-md border border-input bg-background h-11"
                           containerClass="phone-input"
                           {...field}
                         />
@@ -136,7 +151,12 @@ export default function Home() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full">Register</Button>
+                <Button 
+                  type="submit" 
+                  className="w-full h-11 text-lg font-medium hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200"
+                >
+                  Registrarse
+                </Button>
               </form>
             </Form>
           </CardContent>

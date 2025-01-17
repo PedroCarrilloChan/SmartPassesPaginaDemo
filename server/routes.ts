@@ -2,6 +2,18 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import fetch from "node-fetch";
 
+// Configuración del servidor
+const SERVER_CONFIG = {
+  walletClub: {
+    programId: process.env.WALLET_CLUB_PROGRAM_ID || "4886905521176576",
+    apiKey: process.env.WALLET_CLUB_API_KEY || "hSFGTPiMDxYGijWEklMFIRzEPAlxLwOTNRiUiyOwgzfPBvnWpalPZFpbHtjanpOZ",
+    baseUrl: "https://pass.walletclub.io/api/v1",
+  },
+  externalServices: {
+    androidInstallUrl: process.env.ANDROID_INSTALL_URL || "https://android-instalacion-automatica-onlinemidafilia.replit.app/generateLink",
+  }
+};
+
 export function registerRoutes(app: Express): Server {
   const httpServer = createServer(app);
 
@@ -18,7 +30,7 @@ export function registerRoutes(app: Express): Server {
     try {
       console.log('Proxy: Iniciando request a servicio Android con URL:', url);
 
-      const response = await fetch('https://android-instalacion-automatica-onlinemidafilia.replit.app/generateLink', {
+      const response = await fetch(SERVER_CONFIG.externalServices.androidInstallUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,7 +61,6 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
-  // Existing routes...
   app.post('/api/register', async (req, res) => {
     try {
       const { firstName, lastName, email, phone } = req.body;
@@ -57,19 +68,17 @@ export function registerRoutes(app: Express): Server {
       if (!firstName || !lastName || !email || !phone) {
         return res.status(400).json({ 
           success: false,
-          error: 'Missing required fields' 
+          error: 'Faltan campos requeridos' 
         });
       }
 
-      // Log the request payload for debugging
-      console.log('Registration request payload:', {
+      console.log('Datos de registro:', {
         firstName,
         lastName,
         email,
         phone,
       });
 
-      // Simplified request body without customFields
       const requestBody = {
         firstName,
         lastName,
@@ -77,24 +86,26 @@ export function registerRoutes(app: Express): Server {
         phone
       };
 
-      console.log('Wallet Club API request:', JSON.stringify(requestBody, null, 2));
+      console.log('Request a Wallet Club API:', JSON.stringify(requestBody, null, 2));
 
-      const response = await fetch('https://pass.walletclub.io/api/v1/loyalty/programs/4886905521176576/customers', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'hSFGTPiMDxYGijWEklMFIRzEPAlxLwOTNRiUiyOwgzfPBvnWpalPZFpbHtjanpOZ'
-        },
-        body: JSON.stringify(requestBody)
-      });
+      const response = await fetch(
+        `${SERVER_CONFIG.walletClub.baseUrl}/loyalty/programs/${SERVER_CONFIG.walletClub.programId}/customers`, 
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': SERVER_CONFIG.walletClub.apiKey
+          },
+          body: JSON.stringify(requestBody)
+        }
+      );
 
       const responseData = await response.json();
-      console.log('Wallet Club API response:', JSON.stringify(responseData, null, 2));
+      console.log('Respuesta de Wallet Club API:', JSON.stringify(responseData, null, 2));
 
       if (!response.ok) {
-        console.error('Wallet Club API error:', JSON.stringify(responseData, null, 2));
+        console.error('Error en Wallet Club API:', JSON.stringify(responseData, null, 2));
 
-        // Check for specific error types
         if (responseData.errors?.some((error: any) => error.field === 'phone' && error.reasons.includes('Phone number already taken'))) {
           return res.status(400).json({
             success: false,
@@ -125,7 +136,7 @@ export function registerRoutes(app: Express): Server {
       req.session.loyaltyData = responseData;
       res.json({ success: true });
     } catch (error) {
-      console.error('Registration error:', error);
+      console.error('Error en registro:', error);
       res.status(500).json({ 
         success: false,
         error: 'Error en el registro. Por favor intente nuevamente.' 
@@ -137,7 +148,7 @@ export function registerRoutes(app: Express): Server {
     if (req.session.loyaltyData) {
       res.json(req.session.loyaltyData);
     } else {
-      res.status(404).json({ error: 'No loyalty data found' });
+      res.status(404).json({ error: 'No se encontraron datos de lealtad' });
     }
   });
 
