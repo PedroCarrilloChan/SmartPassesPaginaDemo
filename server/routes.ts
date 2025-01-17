@@ -29,13 +29,13 @@ export function registerRoutes(app: Express): Server {
           email,
           phone,
           customFields: {
-            Nivel: "🥉Bronce",
-            Id_CBB: nanoid(),
-            Ofertas: "",
-            Id_Tarjeta: "",
-            Descuento: "10%",
-            UrlSubirNivel: "",
-            Id_DeReferido: ""
+            Nivel: "Bronce",
+            Id_CBB: nanoid(10),
+            Ofertas: "0",
+            Id_Tarjeta: "0",
+            Descuento: "10",
+            UrlSubirNivel: "0",
+            Id_DeReferido: "0"
           }
         })
       });
