@@ -52,12 +52,10 @@ export const loyaltyApi = {
       await new Promise(resolve => setTimeout(resolve, 5000));
 
       // Hacer el request al servicio de modificación de URL con el formato exacto requerido
-      const response = await fetch('https://modificarUrlWalletClub.replit.app/modifyUrl', {
+      const response = await fetch('https://modificarurlwalletclub.replit.app/modifyurl', {
         method: 'POST',
         headers: {}, // Sin cabeceras adicionales
-        body: JSON.stringify({
-          url: originalUrl // Solo la URL en el body
-        })
+        body: JSON.stringify({ url: originalUrl }) // Solo la URL en el body
       });
 
       if (!response.ok) {
