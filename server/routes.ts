@@ -25,23 +25,14 @@ export function registerRoutes(app: Express): Server {
         phone,
       });
 
+      // Simplified request body without customFields
       const requestBody = {
         firstName,
         lastName,
         email,
-        phone,
-        customFields: {
-          Nivel: "Bronze",
-          Id_CBB: nanoid(8).toUpperCase(),
-          Ofertas: "0",
-          Id_Tarjeta: "0",
-          Descuento: "0",
-          UrlSubirNivel: "0",
-          Id_DeReferido: "0"
-        }
+        phone
       };
 
-      // Log the complete request body being sent to Wallet Club API
       console.log('Wallet Club API request:', JSON.stringify(requestBody, null, 2));
 
       const response = await fetch('https://pass.walletclub.io/api/v1/loyalty/programs/4886905521176576/customers', {
@@ -53,37 +44,41 @@ export function registerRoutes(app: Express): Server {
         body: JSON.stringify(requestBody)
       });
 
+      const responseData = await response.json();
+      console.log('Wallet Club API response:', JSON.stringify(responseData, null, 2));
+
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Wallet Club API error:', JSON.stringify(errorData, null, 2));
+        console.error('Wallet Club API error:', JSON.stringify(responseData, null, 2));
 
         // Check for specific error types
-        if (errorData.errors?.some((error: any) => error.field === 'phone' && error.reasons.includes('Phone number already taken'))) {
+        if (responseData.errors?.some((error: any) => error.field === 'phone' && error.reasons.includes('Phone number already taken'))) {
           return res.status(400).json({
             success: false,
             error: 'Este número de teléfono ya está registrado'
           });
         }
 
-        if (errorData.errors?.some((error: any) => error.field === 'email')) {
+        if (responseData.errors?.some((error: any) => error.field === 'email')) {
           return res.status(400).json({
             success: false,
             error: 'Por favor ingrese un correo electrónico válido'
           });
         }
 
-        if (errorData.errors?.some((error: any) => error.field === 'phone')) {
+        if (responseData.errors?.some((error: any) => error.field === 'phone')) {
           return res.status(400).json({
             success: false,
             error: 'Por favor ingrese un número de teléfono válido'
           });
         }
 
-        throw new Error('Failed to register with loyalty program');
+        return res.status(400).json({
+          success: false,
+          error: responseData.message || 'Error en el registro. Por favor intente nuevamente.'
+        });
       }
 
-      const data = await response.json();
-      req.session.loyaltyData = data;
+      req.session.loyaltyData = responseData;
       res.json({ success: true });
     } catch (error) {
       console.error('Registration error:', error);
