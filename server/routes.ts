@@ -17,32 +17,45 @@ export function registerRoutes(app: Express): Server {
         });
       }
 
+      // Log the request payload for debugging
+      console.log('Registration request payload:', {
+        firstName,
+        lastName,
+        email,
+        phone,
+      });
+
+      const requestBody = {
+        firstName,
+        lastName,
+        email,
+        phone,
+        customFields: {
+          Nivel: "Bronze",
+          Id_CBB: nanoid(8).toUpperCase(),
+          Ofertas: "0",
+          Id_Tarjeta: "0",
+          Descuento: "0",
+          UrlSubirNivel: "0",
+          Id_DeReferido: "0"
+        }
+      };
+
+      // Log the complete request body being sent to Wallet Club API
+      console.log('Wallet Club API request:', JSON.stringify(requestBody, null, 2));
+
       const response = await fetch('https://pass.walletclub.io/api/v1/loyalty/programs/4886905521176576/customers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'hSFGTPiMDxYGijWEklMFIRzEPAlxLwOTNRiUiyOwgzfPBvnWpalPZFpbHtjanpOZ'
         },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          email,
-          phone,
-          customFields: {
-            Nivel: "Bronce",
-            Id_CBB: nanoid(10),
-            Ofertas: "0",
-            Id_Tarjeta: "0",
-            Descuento: "10",
-            UrlSubirNivel: "0",
-            Id_DeReferido: "0"
-          }
-        })
+        body: JSON.stringify(requestBody)
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('Wallet Club API error:', errorData);
+        console.error('Wallet Club API error:', JSON.stringify(errorData, null, 2));
 
         // Check for specific error types
         if (errorData.errors?.some((error: any) => error.field === 'phone' && error.reasons.includes('Phone number already taken'))) {
