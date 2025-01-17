@@ -45,30 +45,24 @@ export const loyaltyApi = {
     try {
       console.log('URL original recibida:', originalUrl);
 
-      const response = await fetch('https://ModificarUrlWalletClub.replit.app/modifyUrl', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({ 
-          url: originalUrl 
-        })
-      });
+      // Encontrar la posición del símbolo '?' si existe
+      const queryIndex = originalUrl.indexOf('?');
 
-      console.log('Respuesta del servidor:', response.status, response.statusText);
-
-      const data = await response.json();
-      console.log('Datos recibidos:', data);
-
-      if (data.error === false && data.url) {
-        return data.url;
+      let modifiedUrl = '';
+      if (queryIndex !== -1) {
+        // Si hay parámetros de consulta, insertar .pkpass antes del '?'
+        modifiedUrl = originalUrl.slice(0, queryIndex) + '.pkpass' + originalUrl.slice(queryIndex);
+      } else {
+        // Si no hay parámetros de consulta, simplemente agregar .pkpass al final
+        modifiedUrl = originalUrl + '.pkpass';
       }
 
-      throw new Error('La respuesta no contiene una URL válida');
+      console.log('URL modificada:', modifiedUrl);
+      return modifiedUrl;
+
     } catch (error) {
-      console.error('Error detallado:', error);
-      throw new Error('No se pudo conectar al servicio de modificación de URL. Por favor, inténtelo de nuevo más tarde.');
+      console.error('Error al modificar la URL:', error);
+      throw new Error('Error al procesar la URL. Por favor, inténtelo de nuevo más tarde.');
     }
   }
 };
