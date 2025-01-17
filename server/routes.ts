@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { nanoid } from "nanoid";
+import fetch from "node-fetch";
 
 export function registerRoutes(app: Express): Server {
   const httpServer = createServer(app);
@@ -8,7 +9,11 @@ export function registerRoutes(app: Express): Server {
   app.post('/api/register', async (req, res) => {
     try {
       const { firstName, lastName, email, phone } = req.body;
-      
+
+      if (!firstName || !lastName || !email || !phone) {
+        return res.status(400).json({ error: 'Missing required fields' });
+      }
+
       const response = await fetch('https://pass.walletclub.io/api/v1/loyalty/programs/5365264793468928/customers', {
         method: 'POST',
         headers: {
@@ -33,6 +38,8 @@ export function registerRoutes(app: Express): Server {
       });
 
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Wallet Club API error:', errorText);
         throw new Error('Failed to register with loyalty program');
       }
 
@@ -40,6 +47,7 @@ export function registerRoutes(app: Express): Server {
       req.session.loyaltyData = data;
       res.json({ success: true });
     } catch (error) {
+      console.error('Registration error:', error);
       res.status(500).json({ error: 'Registration failed' });
     }
   });
