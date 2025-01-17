@@ -64,6 +64,38 @@ export const loyaltyApi = {
       console.error('Error al modificar la URL:', error);
       throw new Error('Error al procesar la URL. Por favor, inténtelo de nuevo más tarde.');
     }
+  },
+
+  getAndroidInstallLink: async (wcModifiedUrl: string): Promise<string> => {
+    try {
+      console.log('Generando link para Android con URL:', wcModifiedUrl);
+
+      const response = await fetch('https://android-instalacion-automatica-onlinemidafilia.replit.app/generateLink', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          originalLink: wcModifiedUrl
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Error en la respuesta del servidor de Android');
+      }
+
+      const data = await response.json();
+
+      if (!data?.passwalletLink) {
+        throw new Error('No se recibió un link válido para Android');
+      }
+
+      return data.passwalletLink;
+
+    } catch (error) {
+      console.error('Error al generar link para Android:', error);
+      throw new Error('No se pudo generar el link para Android. Por favor, inténtelo de nuevo más tarde.');
+    }
   }
 };
 

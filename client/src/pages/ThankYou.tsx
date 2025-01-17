@@ -51,7 +51,11 @@ export default function ThankYou() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button className="flex-1 max-w-xs mx-auto" variant="outline">
+              <Button 
+                className="flex-1 max-w-xs mx-auto" 
+                variant="outline"
+                onClick={() => navigate('/android-install')}
+              >
                 Download for Android
               </Button>
               <Button 
