@@ -1,14 +1,25 @@
 import { useEffect } from "react";
 import { useLocation } from "wouter";
 import { Loader2 } from "lucide-react";
+import { detectDevice } from "@/lib/utils";
 
 export default function Loading() {
   const [, navigate] = useLocation();
 
   useEffect(() => {
+    const deviceType = detectDevice();
+
     const timer = setTimeout(() => {
-      navigate('/thank-you');
-    }, 3000); 
+      // Redirigir según el tipo de dispositivo
+      if (deviceType === 'ios') {
+        navigate('/iphone-install');
+      } else if (deviceType === 'android') {
+        navigate('/android-install');
+      } else {
+        // Si es desktop, mostrar la página de selección
+        navigate('/thank-you');
+      }
+    }, 5000); // 5 segundos
 
     return () => clearTimeout(timer);
   }, [navigate]);

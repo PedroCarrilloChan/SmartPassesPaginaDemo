@@ -44,21 +44,8 @@ export default function Home() {
         throw new Error(result.error || 'Error en el registro');
       }
 
-      // Detectar el dispositivo después del registro exitoso
-      const deviceType = detectDevice();
-
-      // Esperar 3 segundos antes de redirigir
-      await new Promise(resolve => setTimeout(resolve, 3000));
-
-      // Redirigir basado en el tipo de dispositivo
-      if (deviceType === 'ios') {
-        navigate('/iphone-install');
-      } else if (deviceType === 'android') {
-        navigate('/android-install');
-      } else {
-        // Si es desktop, mostrar la página de selección
-        navigate('/thank-you');
-      }
+      // Redirigir a la página de carga
+      navigate('/loading');
 
     } catch (error) {
       toast({
