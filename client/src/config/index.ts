@@ -7,9 +7,11 @@ export const config = {
   },
   // Company branding
   branding: {
-    logoUrl: import.meta.env.VITE_COMPANY_LOGO_URL || "", // URL del logo de la empresa
+    logoUrl: import.meta.env.VITE_COMPANY_LOGO_URL || "https://storage.googleapis.com/tapthetable/assets/1881528/images/ICON_87x97__174_x_174_px_-removebg-preview.png", // URL del logo de la empresa
     name: import.meta.env.VITE_COMPANY_NAME || "Wallet Club", // Nombre de la empresa
     primaryColor: "hsl(16 100% 50%)", // Color primario (naranja)
+    heroUrl: import.meta.env.VITE_HERO_IMAGE_URL, // URL de la imagen de fondo del hero
+    bottomImageUrl: import.meta.env.VITE_BOTTOM_IMAGE_URL, // URL de la imagen inferior
   },
   // External services
   externalServices: {

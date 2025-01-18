@@ -43,7 +43,7 @@ export default function Home() {
         throw new Error(result.error || 'Error en el registro');
       }
 
-      await new Promise(resolve => setTimeout(resolve, 5000));
+      await new Promise(resolve => setTimeout(resolve, 3000));
       navigate('/loading');
     } catch (error) {
       toast({
