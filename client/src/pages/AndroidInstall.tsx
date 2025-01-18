@@ -89,7 +89,7 @@ export default function AndroidInstall() {
                   Toca el botón azul que dice "Instalar" como se muestra:
                 </p>
                 <img
-                  src="/path/to/android-step1.png"
+                  src="https://storage.googleapis.com/tapthetable/assets/1881528/images/Instalar_Android.png"
                   alt="Paso 1 instalación Android"
                   className="rounded-lg mx-auto max-w-[280px] sm:max-w-[320px] shadow-md"
                   loading="lazy"
@@ -105,7 +105,7 @@ export default function AndroidInstall() {
                   Luego, toca el botón azul que dice "Continuar":
                 </p>
                 <img
-                  src="/path/to/android-step2.png"
+                  src="https://storage.googleapis.com/tapthetable/assets/1881528/images/Continuar_Android.png"
                   alt="Paso 2 instalación Android"
                   className="rounded-lg mx-auto max-w-[280px] sm:max-w-[320px] shadow-md"
                   loading="lazy"

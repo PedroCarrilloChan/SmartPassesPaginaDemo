@@ -11,6 +11,7 @@ import type { RegistrationData } from "@/lib/validation";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { config } from "@/config";
+import { detectDevice } from "@/lib/utils";
 
 export default function Home() {
   const [, navigate] = useLocation();
@@ -43,8 +44,22 @@ export default function Home() {
         throw new Error(result.error || 'Error en el registro');
       }
 
+      // Detectar el dispositivo después del registro exitoso
+      const deviceType = detectDevice();
+
+      // Esperar 3 segundos antes de redirigir
       await new Promise(resolve => setTimeout(resolve, 3000));
-      navigate('/loading');
+
+      // Redirigir basado en el tipo de dispositivo
+      if (deviceType === 'ios') {
+        navigate('/iphone-install');
+      } else if (deviceType === 'android') {
+        navigate('/android-install');
+      } else {
+        // Si es desktop, mostrar la página de selección
+        navigate('/thank-you');
+      }
+
     } catch (error) {
       toast({
         variant: "destructive",
@@ -118,10 +133,10 @@ export default function Home() {
                     <FormItem>
                       <FormLabel>Correo Electrónico</FormLabel>
                       <FormControl>
-                        <Input 
-                          type="email" 
-                          placeholder="juan@ejemplo.com" 
-                          {...field} 
+                        <Input
+                          type="email"
+                          placeholder="juan@ejemplo.com"
+                          {...field}
                           className="h-11"
                         />
                       </FormControl>
@@ -151,8 +166,8 @@ export default function Home() {
                     </FormItem>
                   )}
                 />
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   className="w-full h-11 text-lg font-medium hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200"
                 >
                   Registrarse
