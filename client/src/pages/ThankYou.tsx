@@ -4,9 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { SiAndroid, SiApple } from "react-icons/si";
 import { config } from "@/config";
+import { detectDevice } from "@/lib/utils";
+import { AlertCircle } from "lucide-react";
 
 export default function ThankYou() {
   const [, navigate] = useLocation();
+  const deviceType = detectDevice();
+  const isDesktop = deviceType === 'desktop';
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -28,6 +32,17 @@ export default function ThankYou() {
             <CardTitle className="text-2xl md:text-3xl">Bienvenido a Nuestro Programa VIP</CardTitle>
           </CardHeader>
           <CardContent className="space-y-8">
+            {isDesktop && (
+              <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-md">
+                <div className="flex items-center">
+                  <AlertCircle className="h-5 w-5 text-yellow-400 mr-2" />
+                  <p className="text-sm text-yellow-700">
+                    Recuerda que las tarjetas VIP son únicamente para dispositivos móviles. Por favor, accede desde tu teléfono Android o iPhone para completar la instalación.
+                  </p>
+                </div>
+              </div>
+            )}
+
             <p className="text-lg text-center text-muted-foreground">
               Descarga nuestra tarjeta digital para comenzar a disfrutar de tus beneficios exclusivos
             </p>
