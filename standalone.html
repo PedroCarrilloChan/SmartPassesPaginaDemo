@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#FF4D00" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="description" content="Registra tu tarjeta VIP en tu dispositivo móvil" />
+    <title>Wallet Club - Tarjeta VIP</title>
+    
+    <!-- Estilos -->
+    <style>
+        :root {
+            --primary: hsl(16, 100%, 50%);
+            --background: #ffffff;
+            --foreground: #000000;
+            --muted: #6b7280;
+            --destructive: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--background);
+            color: var(--foreground);
+            min-height: 100vh;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .hero {
+            height: 40vh;
+            background: linear-gradient(to bottom, rgba(255, 77, 0, 0.2), var(--background));
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: white;
+            padding: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            margin-top: -40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .error {
+            color: var(--destructive);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: scale(1.02);
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .alert {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .alert-warning {
+            background-color: #fef3c7;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .install-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .install-image {
+            max-width: 280px;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Página de Registro -->
+    <div id="registerPage">
+        <div class="hero">
+            <img src="https://storage.googleapis.com/tapthetable/assets/1881528/images/ICON_87x97__174_x_174_px_-removebg-preview.png" alt="Logo" class="logo">
+            <h1 style="font-size: 2rem; font-weight: bold; color: var(--primary);">Únete a Nuestro Programa VIP</h1>
+        </div>
+
+        <div class="container">
+            <div class="card">
+                <form id="registrationForm" onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" class="form-input" name="firstName" required placeholder="Juan">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Apellido</label>
+                        <input type="text" class="form-input" name="lastName" required placeholder="Pérez">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Correo Electrónico</label>
+                        <input type="email" class="form-input" name="email" required placeholder="juan@ejemplo.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Teléfono</label>
+                        <input type="tel" class="form-input" name="phone" required placeholder="+52">
+                    </div>
+
+                    <button type="submit" class="btn" id="submitButton">Registrarse</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Página de Carga -->
+    <div id="loadingPage" class="hidden loading">
+        <div class="spinner"></div>
+        <h2 style="font-size: 1.5rem; margin-bottom: 12px;">Por favor espere un momento...</h2>
+        <p style="color: var(--muted);">Estamos preparando todo para usted</p>
+    </div>
+
+    <!-- Página de Instalación Android -->
+    <div id="androidPage" class="hidden">
+        <div class="container">
+            <div class="card">
+                <h1 style="font-size: 1.5rem; font-weight: bold; text-align: center; margin-bottom: 24px;">
+                    Instalar Tarjeta en Android
+                </h1>
+
+                <div style="background: rgba(255, 77, 0, 0.1); padding: 20px; border-radius: 8px; margin-bottom: 24px;">
+                    <h2 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 12px;">
+                        <span style="background: var(--primary); color: white; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; margin-right: 8px;">1</span>
+                        Primer Paso
+                    </h2>
+                    <p style="margin-bottom: 16px;">Toca el botón azul que dice "Instalar" como se muestra:</p>
+                    <img src="https://storage.googleapis.com/tapthetable/assets/1881528/images/Instalar_Android.png" alt="Paso 1 instalación Android" class="install-image">
+                </div>
+
+                <button id="androidInstallButton" class="btn">
+                    Obtener mi tarjeta
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Página de Instalación iPhone -->
+    <div id="iphonePage" class="hidden">
+        <div class="container">
+            <div class="card">
+                <h1 style="font-size: 1.5rem; font-weight: bold; text-align: center; margin-bottom: 24px;">
+                    Instalar Tarjeta en iPhone
+                </h1>
+
+                <div id="iphoneInstructions"></div>
+
+                <button id="iphoneInstallButton" class="btn">
+                    Obtener mi tarjeta
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Página de Selección de Dispositivo -->
+    <div id="deviceSelectionPage" class="hidden">
+        <div class="container">
+            <div class="card">
+                <h1 style="font-size: 1.5rem; font-weight: bold; text-align: center; margin-bottom: 24px;">
+                    Bienvenido a Nuestro Programa VIP
+                </h1>
+
+                <div class="alert alert-warning">
+                    <p style="font-size: 0.875rem; color: #92400e;">
+                        Recuerda que las tarjetas VIP son únicamente para dispositivos móviles. 
+                        Por favor, accede desde tu teléfono Android o iPhone para completar la instalación.
+                    </p>
+                </div>
+
+                <p style="text-align: center; margin-bottom: 24px; color: var(--muted);">
+                    Selecciona tu dispositivo:
+                </p>
+
+                <button onclick="showPage('androidPage')" class="btn install-button" style="margin-bottom: 12px;">
+                    Android
+                </button>
+                <button onclick="showPage('iphonePage')" class="btn install-button">
+                    iPhone
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Función para detectar el tipo de dispositivo
+        function detectDevice() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            if (/iphone|ipad|ipod/.test(userAgent)) return 'ios';
+            if (/android/.test(userAgent)) return 'android';
+            return 'desktop';
+        }
+
+        // Función para mostrar una página específica
+        function showPage(pageId) {
+            const pages = ['registerPage', 'loadingPage', 'androidPage', 'iphonePage', 'deviceSelectionPage'];
+            pages.forEach(page => document.getElementById(page).classList.add('hidden'));
+            document.getElementById(pageId).classList.remove('hidden');
+        }
+
+        // Manejador del formulario de registro
+        async function handleSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const submitButton = document.getElementById('submitButton');
+            submitButton.disabled = true;
+
+            const formData = new FormData(form);
+            const data = {
+                firstName: formData.get('firstName'),
+                lastName: formData.get('lastName'),
+                email: formData.get('email'),
+                phone: formData.get('phone')
+            };
+
+            try {
+                // Mostrar página de carga
+                showPage('loadingPage');
+
+                // Simular registro (reemplazar con tu endpoint real)
+                await new Promise(resolve => setTimeout(resolve, 5000));
+
+                // Detectar dispositivo y redirigir
+                const deviceType = detectDevice();
+                if (deviceType === 'ios') {
+                    showPage('iphonePage');
+                } else if (deviceType === 'android') {
+                    showPage('androidPage');
+                } else {
+                    showPage('deviceSelectionPage');
+                }
+            } catch (error) {
+                alert('Error en el registro. Por favor intente nuevamente.');
+                showPage('registerPage');
+                submitButton.disabled = false;
+            }
+        }
+
+        // Configuración inicial
+        document.addEventListener('DOMContentLoaded', () => {
+            // Manejadores para los botones de instalación
+            document.getElementById('androidInstallButton').addEventListener('click', () => {
+                // Aquí iría la lógica para obtener y abrir el enlace de Android
+                alert('Generando enlace para Android...');
+            });
+
+            document.getElementById('iphoneInstallButton').addEventListener('click', () => {
+                // Aquí iría la lógica para obtener y abrir el enlace de iPhone
+                alert('Generando enlace para iPhone...');
+            });
+        });
+    </script>
+</body>
+</html>
