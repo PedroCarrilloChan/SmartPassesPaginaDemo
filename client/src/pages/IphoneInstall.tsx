@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { loyaltyApi } from "@/lib/api";
-import { Loader2 } from "lucide-react";
+import { Loader2, ChevronRight } from "lucide-react";
 
 export default function IphoneInstall() {
   const { toast } = useToast();
@@ -46,57 +46,87 @@ export default function IphoneInstall() {
 
   if (isDataLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Loader2 className="h-8 w-8 animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background p-6">
-      <Card className="max-w-2xl mx-auto">
+    <div className="min-h-screen bg-background px-4 py-6 sm:px-6">
+      <Card className="max-w-lg mx-auto shadow-lg">
         <CardContent className="pt-6 space-y-6">
-          <h1 className="text-2xl font-bold text-center">
-            Genial {loyaltyData?.firstName},
+          <h1 className="text-2xl sm:text-3xl font-bold text-center mb-4">
+            Bienvenido {loyaltyData?.firstName}
           </h1>
 
-          <p className="text-center">
-            Abajo está botón "Obtener Mi Tarjeta" para instalar la tarjeta en tu iPhone.
-          </p>
+          <div className="bg-primary/5 p-4 sm:p-6 rounded-lg space-y-6">
+            <div className="space-y-6">
+              <div className="space-y-3">
+                <h2 className="text-lg font-semibold flex items-center">
+                  <span className="bg-primary text-primary-foreground w-6 h-6 rounded-full inline-flex items-center justify-center mr-2 text-sm">1</span>
+                  Primer Paso
+                </h2>
+                <p className="text-sm sm:text-base">
+                  Toca el botón "Obtener mi tarjeta" para abrir la tarjeta:
+                </p>
+              </div>
 
-          <div className="bg-primary/5 p-4 rounded-lg space-y-4">
-            <h2 className="font-bold text-center">
-              📲 𝗜𝗻𝘀𝘁𝗿𝘂𝗰𝗰𝗶𝗼𝗻𝗲𝘀 𝗱𝗲 𝗶𝗻𝘀𝘁𝗮𝗹𝗮𝗰𝗶𝗼́𝗻 𝗲𝗻 𝟮 𝗽𝗮𝘀𝗼𝘀
-            </h2>
-
-            <ol className="list-decimal pl-6 space-y-4">
-              <li>1️⃣ Pulsa el botón "Obtener mi tarjeta" de abajo</li>
-              <li>2️⃣ A continuación, simplemente haga clic en Añadir como se muestra en la imagen:</li>
-            </ol>
+              <div className="space-y-3">
+                <h2 className="text-lg font-semibold flex items-center">
+                  <span className="bg-primary text-primary-foreground w-6 h-6 rounded-full inline-flex items-center justify-center mr-2 text-sm">2</span>
+                  Segundo Paso
+                </h2>
+                <p className="text-sm sm:text-base">
+                  Luego, toca el botón "Añadir" como se muestra:
+                </p>
+                <img
+                  src="https://storage.googleapis.com/tapthetable/assets/1881528/images/Anadir_iPhone.png"
+                  alt="Paso 2 instalación iPhone"
+                  className="rounded-lg mx-auto max-w-[280px] sm:max-w-[320px] shadow-md"
+                  loading="lazy"
+                />
+              </div>
+            </div>
           </div>
 
-          <Button 
-            className="w-full"
-            disabled={isProcessing || !modifiedUrl}
-            onClick={() => modifiedUrl && window.open(modifiedUrl, '_blank')}
-          >
-            {isProcessing ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Procesando...
-              </>
-            ) : error ? (
-              "Error al procesar la URL"
-            ) : (
-              "Obtener mi tarjeta"
-            )}
-          </Button>
-
-          {error && (
-            <p className="text-sm text-destructive text-center">
-              {error}. Por favor, inténtelo de nuevo más tarde.
+          <div className="space-y-4">
+            <p className="text-center text-sm sm:text-base">
+              ¡Toca el botón para comenzar! 👇
             </p>
-          )}
+
+            {error ? (
+              <div className="space-y-4">
+                <p className="text-sm text-destructive text-center px-4">
+                  {error}
+                </p>
+                <Button 
+                  className="w-full h-12 text-base"
+                  onClick={() => processUrl()}
+                >
+                  Intentar nuevamente
+                </Button>
+              </div>
+            ) : (
+              <Button 
+                className="w-full h-12 text-base"
+                disabled={isProcessing || !modifiedUrl}
+                onClick={() => modifiedUrl && window.open(modifiedUrl, '_blank')}
+              >
+                {isProcessing ? (
+                  <>
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    Procesando...
+                  </>
+                ) : (
+                  <>
+                    Obtener mi tarjeta
+                    <ChevronRight className="ml-2 h-5 w-5" />
+                  </>
+                )}
+              </Button>
+            )}
+          </div>
         </CardContent>
       </Card>
     </div>
