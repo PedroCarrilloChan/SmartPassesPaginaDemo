@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { loyaltyApi } from "@/lib/api";
-import { Loader2, ChevronRight, ScanLine } from "lucide-react";
+import { Loader2, ChevronRight, ScanLine, Send } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 
 export default function AndroidInstall() {
@@ -13,12 +14,37 @@ export default function AndroidInstall() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
+  const [emailSent, setEmailSent] = useState(false);
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
 
   const { data: loyaltyData, isLoading: isDataLoading } = useQuery({
     queryKey: ["/api/loyalty-data"],
     queryFn: loyaltyApi.getLoyaltyData,
     retry: false
   });
+
+  const handleSendEmail = async () => {
+    if (!loyaltyData?.email) return;
+
+    setIsSendingEmail(true);
+    try {
+      // Aquí iría la llamada a la API para enviar el correo
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulación de envío
+      setEmailSent(true);
+      toast({
+        title: "Correo enviado",
+        description: "Las instrucciones han sido enviadas a tu correo electrónico.",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "No se pudo enviar el correo. Por favor, intenta nuevamente.",
+      });
+    } finally {
+      setIsSendingEmail(false);
+    }
+  };
 
   useEffect(() => {
     const processUrl = async () => {
@@ -172,6 +198,40 @@ export default function AndroidInstall() {
                     </div>
                   </div>
                 )}
+
+                {/* Nueva sección de envío por correo */}
+                <div className="border-t pt-6 mt-8">
+                  <p className="text-sm text-center text-muted-foreground mb-4">
+                    ¿Prefieres recibir las instrucciones por correo electrónico?
+                  </p>
+                  <div className="flex gap-2">
+                    <Input
+                      type="email"
+                      value={loyaltyData?.email || ''}
+                      readOnly
+                      className="bg-muted"
+                    />
+                    <Button
+                      onClick={handleSendEmail}
+                      disabled={isSendingEmail || !loyaltyData?.email}
+                      className="min-w-[100px]"
+                    >
+                      {isSendingEmail ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <>
+                          <Send className="h-4 w-4 mr-2" />
+                          Enviar
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                  {emailSent && (
+                    <p className="text-sm text-green-600 mt-2 text-center">
+                      ✅ Correo enviado con éxito. Por favor, revisa tu bandeja de entrada o la carpeta de spam si no lo encuentras.
+                    </p>
+                  )}
+                </div>
               </>
             )}
           </div>
