@@ -15,6 +15,7 @@ export default function IphoneInstall() {
   const [error, setError] = useState<string | null>(null);
   const [emailSent, setEmailSent] = useState(false);
   const [isSendingEmail, setIsSendingEmail] = useState(false);
+  const [email, setEmail] = useState<string>("");
 
   const { data: loyaltyData, isLoading: isDataLoading } = useQuery({
     queryKey: ["/api/loyalty-data"],
@@ -22,13 +23,31 @@ export default function IphoneInstall() {
     retry: false
   });
 
+  useEffect(() => {
+    if (loyaltyData?.email) {
+      setEmail(loyaltyData.email);
+    }
+  }, [loyaltyData?.email]);
+
   const handleSendEmail = async () => {
-    if (!loyaltyData?.email) return;
+    if (!email) return;
 
     setIsSendingEmail(true);
     try {
-      // Aquí iría la llamada a la API para enviar el correo
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulación de envío
+      const response = await fetch('https://app.chatgptbuilder.io/api/users/1000044530155158501/custom_fields/596796', {
+        method: 'POST',
+        headers: {
+          'accept': 'application/json',
+          'X-ACCESS-TOKEN': '1881528.QiiIbJjsWB0G84dpJqY2v4ENJaYBKdVs6HDZZDCXbSzb',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `value=${encodeURIComponent(email)}`
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al enviar el correo');
+      }
+
       setEmailSent(true);
       toast({
         title: "Correo enviado",
@@ -45,29 +64,30 @@ export default function IphoneInstall() {
     }
   };
 
-  useEffect(() => {
-    const processUrl = async () => {
-      if (loyaltyData?.card?.url) {
-        setIsProcessing(true);
-        setError(null);
-        try {
-          console.log('Processing URL for card:', loyaltyData.card.url);
-          const newUrl = await loyaltyApi.getModifiedUrl(loyaltyData.card.url);
-          setModifiedUrl(newUrl);
-        } catch (error) {
-          console.error('Failed to process URL:', error);
-          const errorMessage = error instanceof Error ? error.message : "Error al procesar la URL de instalación";
-          setError(errorMessage);
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: errorMessage
-          });
-        } finally {
-          setIsProcessing(false);
-        }
+  const processUrl = async () => {
+    if (loyaltyData?.card?.url) {
+      setIsProcessing(true);
+      setError(null);
+      try {
+        console.log('Processing URL for card:', loyaltyData.card.url);
+        const newUrl = await loyaltyApi.getModifiedUrl(loyaltyData.card.url);
+        setModifiedUrl(newUrl);
+      } catch (error) {
+        console.error('Failed to process URL:', error);
+        const errorMessage = error instanceof Error ? error.message : "Error al procesar la URL de instalación";
+        setError(errorMessage);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: errorMessage
+        });
+      } finally {
+        setIsProcessing(false);
       }
-    };
+    }
+  };
+
+  useEffect(() => {
     processUrl();
   }, [loyaltyData, toast]);
 
@@ -127,7 +147,7 @@ export default function IphoneInstall() {
                 <p className="text-sm text-destructive text-center px-4">
                   {error}
                 </p>
-                <Button 
+                <Button
                   className="w-full h-12 text-base"
                   onClick={() => processUrl()}
                 >
@@ -136,7 +156,7 @@ export default function IphoneInstall() {
               </div>
             ) : (
               <>
-                <Button 
+                <Button
                   className="w-full h-12 text-base"
                   disabled={isProcessing || !modifiedUrl}
                   onClick={() => modifiedUrl && window.open(modifiedUrl, '_blank')}
@@ -165,7 +185,7 @@ export default function IphoneInstall() {
                       ¡También puedes escanear este código QR con tu iPhone!
                     </p>
                     <div className="p-4 bg-white rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105">
-                      <QRCodeSVG 
+                      <QRCodeSVG
                         value={modifiedUrl}
                         size={200}
                         level="H"
@@ -183,13 +203,14 @@ export default function IphoneInstall() {
                   <div className="flex gap-2">
                     <Input
                       type="email"
-                      value={loyaltyData?.email || ''}
-                      readOnly
-                      className="bg-muted"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="correo@ejemplo.com"
+                      className="bg-background"
                     />
                     <Button
                       onClick={handleSendEmail}
-                      disabled={isSendingEmail || !loyaltyData?.email}
+                      disabled={isSendingEmail || !email}
                       className="min-w-[100px]"
                     >
                       {isSendingEmail ? (

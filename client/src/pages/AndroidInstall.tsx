@@ -16,6 +16,7 @@ export default function AndroidInstall() {
   const [retryCount, setRetryCount] = useState(0);
   const [emailSent, setEmailSent] = useState(false);
   const [isSendingEmail, setIsSendingEmail] = useState(false);
+  const [email, setEmail] = useState<string>("");
 
   const { data: loyaltyData, isLoading: isDataLoading } = useQuery({
     queryKey: ["/api/loyalty-data"],
@@ -23,13 +24,31 @@ export default function AndroidInstall() {
     retry: false
   });
 
+  useEffect(() => {
+    if (loyaltyData?.email) {
+      setEmail(loyaltyData.email);
+    }
+  }, [loyaltyData?.email]);
+
   const handleSendEmail = async () => {
-    if (!loyaltyData?.email) return;
+    if (!email) return;
 
     setIsSendingEmail(true);
     try {
-      // Aquí iría la llamada a la API para enviar el correo
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulación de envío
+      const response = await fetch('https://app.chatgptbuilder.io/api/users/1000044530155158501/custom_fields/596796', {
+        method: 'POST',
+        headers: {
+          'accept': 'application/json',
+          'X-ACCESS-TOKEN': '1881528.QiiIbJjsWB0G84dpJqY2v4ENJaYBKdVs6HDZZDCXbSzb',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `value=${encodeURIComponent(email)}`
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al enviar el correo');
+      }
+
       setEmailSent(true);
       toast({
         title: "Correo enviado",
@@ -207,13 +226,14 @@ export default function AndroidInstall() {
                   <div className="flex gap-2">
                     <Input
                       type="email"
-                      value={loyaltyData?.email || ''}
-                      readOnly
-                      className="bg-muted"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="correo@ejemplo.com"
+                      className="bg-background"
                     />
                     <Button
                       onClick={handleSendEmail}
-                      disabled={isSendingEmail || !loyaltyData?.email}
+                      disabled={isSendingEmail || !email}
                       className="min-w-[100px]"
                     >
                       {isSendingEmail ? (
