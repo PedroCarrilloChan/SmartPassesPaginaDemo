@@ -81,7 +81,7 @@ export default function IphoneInstall() {
                   Luego, toca el botón "Añadir" como se muestra:
                 </p>
                 <img
-                  src="https://storage.googleapis.com/tapthetable/assets/1881528/images/Anadir_iPhone.png"
+                  src="https://walletclub.s3.us-east-1.amazonaws.com/Copy+of+AiBotBuilds+click+instalacion.png"
                   alt="Paso 2 instalación iPhone"
                   className="rounded-lg mx-auto max-w-[280px] sm:max-w-[320px] shadow-md"
                   loading="lazy"

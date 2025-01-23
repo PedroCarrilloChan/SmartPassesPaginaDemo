@@ -1,16 +1,45 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { SiAndroid, SiApple } from "react-icons/si";
 import { config } from "@/config";
 import { detectDevice } from "@/lib/utils";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, ScanLine } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
+import { loyaltyApi } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
 
 export default function ThankYou() {
   const [, navigate] = useLocation();
   const deviceType = detectDevice();
   const isDesktop = deviceType === 'desktop';
+  const [androidUrl, setAndroidUrl] = useState<string>("");
+  const [iphoneUrl, setIphoneUrl] = useState<string>("");
+
+  const { data: loyaltyData } = useQuery({
+    queryKey: ["/api/loyalty-data"],
+    queryFn: loyaltyApi.getLoyaltyData,
+    retry: false
+  });
+
+  useEffect(() => {
+    const generateUrls = async () => {
+      if (loyaltyData?.card?.url) {
+        try {
+          const modifiedUrl = await loyaltyApi.getModifiedUrl(loyaltyData.card.url);
+          setIphoneUrl(modifiedUrl);
+
+          const androidLink = await loyaltyApi.getAndroidInstallLink(modifiedUrl);
+          setAndroidUrl(androidLink);
+        } catch (error) {
+          console.error('Error generando URLs:', error);
+        }
+      }
+    };
+
+    generateUrls();
+  }, [loyaltyData]);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -47,25 +76,71 @@ export default function ThankYou() {
               Descarga nuestra tarjeta digital para comenzar a disfrutar de tus beneficios exclusivos
             </p>
 
-            {/* Botones de instalación */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            {/* Sección Android */}
+            <div className="space-y-6">
               <Button 
-                className="flex-1 max-w-xs mx-auto h-14 text-lg transition-transform hover:scale-105 active:scale-95 shadow-md" 
+                className="w-full sm:w-auto mx-auto h-14 text-lg transition-transform hover:scale-105 active:scale-95 shadow-md flex items-center justify-center"
                 onClick={() => navigate('/android-install')}
               >
                 <SiAndroid className="mr-2 h-6 w-6" />
                 Android
               </Button>
+
+              {androidUrl && (
+                <div className="relative flex flex-col items-center space-y-4">
+                  <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
+                    <div className="animate-bounce">
+                      <ScanLine className="h-8 w-8 text-primary" />
+                    </div>
+                  </div>
+                  <p className="text-sm font-medium text-center text-muted-foreground">
+                    ¡Escanea el código QR con tu dispositivo Android!
+                  </p>
+                  <div className="p-4 bg-white rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105">
+                    <QRCodeSVG 
+                      value={androidUrl}
+                      size={200}
+                      level="H"
+                      includeMargin={true}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Sección iPhone */}
+            <div className="space-y-6">
               <Button 
-                className="flex-1 max-w-xs mx-auto h-14 text-lg transition-transform hover:scale-105 active:scale-95 shadow-md" 
+                className="w-full sm:w-auto mx-auto h-14 text-lg transition-transform hover:scale-105 active:scale-95 shadow-md flex items-center justify-center"
                 onClick={() => navigate('/iphone-install')}
               >
                 <SiApple className="mr-2 h-6 w-6" />
                 iPhone
               </Button>
+
+              {iphoneUrl && (
+                <div className="relative flex flex-col items-center space-y-4">
+                  <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
+                    <div className="animate-bounce">
+                      <ScanLine className="h-8 w-8 text-primary" />
+                    </div>
+                  </div>
+                  <p className="text-sm font-medium text-center text-muted-foreground">
+                    ¡Escanea el código QR con tu iPhone!
+                  </p>
+                  <div className="p-4 bg-white rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105">
+                    <QRCodeSVG 
+                      value={iphoneUrl}
+                      size={200}
+                      level="H"
+                      includeMargin={true}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Nueva sección de imagen configurable */}
+            {/* Imagen promocional configurable */}
             {config.branding.bottomImageUrl && (
               <div className="mt-8">
                 <img
