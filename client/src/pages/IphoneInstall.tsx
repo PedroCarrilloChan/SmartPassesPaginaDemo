@@ -4,7 +4,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { loyaltyApi } from "@/lib/api";
-import { Loader2, ChevronRight } from "lucide-react";
+import { Loader2, ChevronRight, ScanLine } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
 
 export default function IphoneInstall() {
   const { toast } = useToast();
@@ -108,23 +109,46 @@ export default function IphoneInstall() {
                 </Button>
               </div>
             ) : (
-              <Button 
-                className="w-full h-12 text-base"
-                disabled={isProcessing || !modifiedUrl}
-                onClick={() => modifiedUrl && window.open(modifiedUrl, '_blank')}
-              >
-                {isProcessing ? (
-                  <>
-                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    Procesando...
-                  </>
-                ) : (
-                  <>
-                    Obtener mi tarjeta
-                    <ChevronRight className="ml-2 h-5 w-5" />
-                  </>
+              <>
+                <Button 
+                  className="w-full h-12 text-base"
+                  disabled={isProcessing || !modifiedUrl}
+                  onClick={() => modifiedUrl && window.open(modifiedUrl, '_blank')}
+                >
+                  {isProcessing ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Procesando...
+                    </>
+                  ) : (
+                    <>
+                      Obtener mi tarjeta
+                      <ChevronRight className="ml-2 h-5 w-5" />
+                    </>
+                  )}
+                </Button>
+
+                {modifiedUrl && (
+                  <div className="relative flex flex-col items-center space-y-4 pt-8">
+                    <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
+                      <div className="animate-bounce">
+                        <ScanLine className="h-8 w-8 text-primary" />
+                      </div>
+                    </div>
+                    <p className="text-sm font-medium text-center text-muted-foreground">
+                      ¡También puedes escanear este código QR con tu iPhone!
+                    </p>
+                    <div className="p-4 bg-white rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105">
+                      <QRCodeSVG 
+                        value={modifiedUrl}
+                        size={200}
+                        level="H"
+                        includeMargin={true}
+                      />
+                    </div>
+                  </div>
                 )}
-              </Button>
+              </>
             )}
           </div>
         </CardContent>
