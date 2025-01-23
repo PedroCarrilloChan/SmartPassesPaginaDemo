@@ -63,6 +63,19 @@ export default function IphoneInstall() {
         throw new Error('Error al enviar la URL de instalación');
       }
 
+      // Tercer request: enviar tipo de dispositivo
+      const deviceResponse = await fetch('/api/send-device-type', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ deviceType: 'iPhone' })
+      });
+
+      if (!deviceResponse.ok) {
+        throw new Error('Error al enviar el tipo de dispositivo');
+      }
+
       setEmailSent(true);
       toast({
         title: "Correo enviado",

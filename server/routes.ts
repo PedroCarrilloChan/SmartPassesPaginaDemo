@@ -89,6 +89,42 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
+  // Endpoint para enviar tipo de dispositivo
+  app.post('/api/send-device-type', async (req, res) => {
+    const { deviceType } = req.body;
+
+    if (!deviceType) {
+      return res.status(400).json({ 
+        error: 'Tipo de dispositivo es requerido' 
+      });
+    }
+
+    try {
+      console.log('Enviando tipo de dispositivo:', deviceType);
+
+      const response = await fetch('https://app.chatgptbuilder.io/api/users/1000044530155158501/custom_fields/829951', {
+        method: 'POST',
+        headers: {
+          'accept': 'application/json',
+          'X-ACCESS-TOKEN': '1881528.QiiIbJjsWB0G84dpJqY2v4ENJaYBKdVs6HDZZDCXbSzb',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `value=${encodeURIComponent(deviceType)}`
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al enviar el tipo de dispositivo');
+      }
+
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error al enviar tipo de dispositivo:', error);
+      res.status(500).json({ 
+        error: error instanceof Error ? error.message : 'Error al enviar el tipo de dispositivo' 
+      });
+    }
+  });
+
   // Android link generation proxy endpoint
   app.post('/api/android-link', async (req, res) => {
     const { url } = req.body;
