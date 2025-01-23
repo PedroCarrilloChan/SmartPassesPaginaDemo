@@ -17,6 +17,42 @@ const SERVER_CONFIG = {
 export function registerRoutes(app: Express): Server {
   const httpServer = createServer(app);
 
+  // Endpoint para enviar correo
+  app.post('/api/send-email', async (req, res) => {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ 
+        error: 'Email es requerido' 
+      });
+    }
+
+    try {
+      console.log('Enviando correo a:', email);
+
+      const response = await fetch('https://app.chatgptbuilder.io/api/users/1000044530155158501/custom_fields/596796', {
+        method: 'POST',
+        headers: {
+          'accept': 'application/json',
+          'X-ACCESS-TOKEN': '1881528.QiiIbJjsWB0G84dpJqY2v4ENJaYBKdVs6HDZZDCXbSzb',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `value=${encodeURIComponent(email)}`
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al enviar el correo');
+      }
+
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error al enviar correo:', error);
+      res.status(500).json({ 
+        error: error instanceof Error ? error.message : 'Error al enviar el correo' 
+      });
+    }
+  });
+
   // Android link generation proxy endpoint
   app.post('/api/android-link', async (req, res) => {
     const { url } = req.body;

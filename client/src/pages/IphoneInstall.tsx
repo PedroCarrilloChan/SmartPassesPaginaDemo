@@ -34,14 +34,12 @@ export default function IphoneInstall() {
 
     setIsSendingEmail(true);
     try {
-      const response = await fetch('https://app.chatgptbuilder.io/api/users/1000044530155158501/custom_fields/596796', {
+      const response = await fetch('/api/send-email', {
         method: 'POST',
         headers: {
-          'accept': 'application/json',
-          'X-ACCESS-TOKEN': '1881528.QiiIbJjsWB0G84dpJqY2v4ENJaYBKdVs6HDZZDCXbSzb',
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/json'
         },
-        body: `value=${encodeURIComponent(email)}`
+        body: JSON.stringify({ email })
       });
 
       if (!response.ok) {
