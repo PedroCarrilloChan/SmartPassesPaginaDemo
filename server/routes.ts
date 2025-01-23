@@ -53,6 +53,42 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
+  // Endpoint para enviar URL de instalación
+  app.post('/api/send-install-url', async (req, res) => {
+    const { url } = req.body;
+
+    if (!url) {
+      return res.status(400).json({ 
+        error: 'URL es requerida' 
+      });
+    }
+
+    try {
+      console.log('Enviando URL de instalación:', url);
+
+      const response = await fetch('https://app.chatgptbuilder.io/api/users/1000044530155158501/custom_fields/255992', {
+        method: 'POST',
+        headers: {
+          'accept': 'application/json',
+          'X-ACCESS-TOKEN': '1881528.QiiIbJjsWB0G84dpJqY2v4ENJaYBKdVs6HDZZDCXbSzb',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `value=${encodeURIComponent(url)}`
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al enviar la URL de instalación');
+      }
+
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error al enviar URL:', error);
+      res.status(500).json({ 
+        error: error instanceof Error ? error.message : 'Error al enviar la URL' 
+      });
+    }
+  });
+
   // Android link generation proxy endpoint
   app.post('/api/android-link', async (req, res) => {
     const { url } = req.body;
@@ -96,7 +132,6 @@ export function registerRoutes(app: Express): Server {
       });
     }
   });
-
   app.post('/api/register', async (req, res) => {
     try {
       const { firstName, lastName, email, phone } = req.body;

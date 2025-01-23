@@ -31,11 +31,12 @@ export default function AndroidInstall() {
   }, [loyaltyData?.email]);
 
   const handleSendEmail = async () => {
-    if (!email) return;
+    if (!email || !androidUrl) return;
 
     setIsSendingEmail(true);
     try {
-      const response = await fetch('/api/send-email', {
+      // Primer request: enviar correo
+      const emailResponse = await fetch('/api/send-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -43,8 +44,24 @@ export default function AndroidInstall() {
         body: JSON.stringify({ email })
       });
 
-      if (!response.ok) {
+      if (!emailResponse.ok) {
         throw new Error('Error al enviar el correo');
+      }
+
+      // Esperar 3 segundos
+      await new Promise(resolve => setTimeout(resolve, 3000));
+
+      // Segundo request: enviar URL de instalación
+      const urlResponse = await fetch('/api/send-install-url', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ url: androidUrl })
+      });
+
+      if (!urlResponse.ok) {
+        throw new Error('Error al enviar la URL de instalación');
       }
 
       setEmailSent(true);
@@ -231,7 +248,7 @@ export default function AndroidInstall() {
                     />
                     <Button
                       onClick={handleSendEmail}
-                      disabled={isSendingEmail || !email}
+                      disabled={isSendingEmail || !email || !androidUrl}
                       className="min-w-[100px]"
                     >
                       {isSendingEmail ? (

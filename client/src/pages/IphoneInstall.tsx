@@ -30,11 +30,12 @@ export default function IphoneInstall() {
   }, [loyaltyData?.email]);
 
   const handleSendEmail = async () => {
-    if (!email) return;
+    if (!email || !modifiedUrl) return;
 
     setIsSendingEmail(true);
     try {
-      const response = await fetch('/api/send-email', {
+      // Primer request: enviar correo
+      const emailResponse = await fetch('/api/send-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -42,8 +43,24 @@ export default function IphoneInstall() {
         body: JSON.stringify({ email })
       });
 
-      if (!response.ok) {
+      if (!emailResponse.ok) {
         throw new Error('Error al enviar el correo');
+      }
+
+      // Esperar 3 segundos
+      await new Promise(resolve => setTimeout(resolve, 3000));
+
+      // Segundo request: enviar URL de instalación
+      const urlResponse = await fetch('/api/send-install-url', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ url: modifiedUrl })
+      });
+
+      if (!urlResponse.ok) {
+        throw new Error('Error al enviar la URL de instalación');
       }
 
       setEmailSent(true);
@@ -208,7 +225,7 @@ export default function IphoneInstall() {
                     />
                     <Button
                       onClick={handleSendEmail}
-                      disabled={isSendingEmail || !email}
+                      disabled={isSendingEmail || !email || !modifiedUrl}
                       className="min-w-[100px]"
                     >
                       {isSendingEmail ? (
