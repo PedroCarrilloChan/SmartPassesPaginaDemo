@@ -21,7 +21,17 @@
 }
 
 .glass-effect {
-  @apply bg-white/10 backdrop-blur-md border border-white/20 shadow-xl;
+  @apply bg-white/20 backdrop-blur-xl border border-white/30 shadow-2xl;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.card {
+  @apply backdrop-blur-lg bg-white/10 border-white/20;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+input {
+  @apply bg-white/20 backdrop-blur-sm border-white/30 !important;
 }
 
 .animate-float {

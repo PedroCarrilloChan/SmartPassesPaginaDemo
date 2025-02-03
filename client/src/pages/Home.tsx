@@ -57,8 +57,16 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <div className="min-h-[60vh] w-full relative overflow-hidden bg-gradient-to-b from-primary/5 to-background/0">
+    <div className="min-h-screen w-full relative flex flex-col">
+      <div className="absolute inset-0 w-full h-full z-0">
+        <img
+          src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4"
+          alt="Restaurant interior"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/40"></div>
+      </div>
+      <div className="relative z-10 min-h-[60vh] w-full overflow-hidden">
         <div className="absolute inset-0 w-full h-full">
           <div className="absolute inset-0 bg-blue-900/30 mix-blend-overlay"></div>
           <img
@@ -68,7 +76,7 @@ export default function Home() {
           />
         </div>
         <div className="absolute inset-0 flex items-center justify-center flex-col space-y-8 z-10">
-          <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full glass-effect p-2 animate-float">
+          <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full glass-effect p-2 animate-float shadow-2xl">
             <img
               src={config.branding.logoUrl || "https://via.placeholder.com/200"}
               alt={config.branding.name}
@@ -87,8 +95,8 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="flex-1 container max-w-lg mx-auto px-4 py-8">
-        <Card className="w-full transform hover:shadow-lg transition-all duration-300">
+      <div className="relative z-10 flex-1 container max-w-lg mx-auto px-4 py-8">
+        <Card className="w-full backdrop-blur-lg bg-white/10 border-white/20 shadow-2xl transform hover:shadow-2xl transition-all duration-300">
           <CardHeader className="text-center">
             <CardTitle>Registro</CardTitle>
           </CardHeader>
