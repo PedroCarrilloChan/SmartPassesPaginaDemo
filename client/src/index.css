@@ -69,3 +69,42 @@ input {
 .phone-input .country-list .country.highlight {
   @apply bg-primary/20;
 }
+
+/* Rotating border effect */
+.rotating-border {
+  position: relative;
+  overflow: hidden;
+}
+
+.rotating-border::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  background: conic-gradient(from 0deg, transparent 0%, rgba(255,255,255,0.4) 25%, transparent 50%);
+  animation: rotate 4s linear infinite;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Form text color */
+.card {
+  color: white;
+}
+
+.form-label {
+  color: white !important;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+input {
+  color: white !important;
+}

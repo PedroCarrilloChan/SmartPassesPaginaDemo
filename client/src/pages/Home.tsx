@@ -64,7 +64,7 @@ export default function Home() {
           alt="Restaurant interior"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/40"></div>
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
       </div>
       <div className="relative z-10 min-h-[60vh] w-full overflow-hidden">
         <div className="absolute inset-0 w-full h-full">
@@ -96,7 +96,7 @@ export default function Home() {
       </div>
 
       <div className="relative z-10 flex-1 container max-w-lg mx-auto px-4 py-8">
-        <Card className="w-full backdrop-blur-lg bg-white/10 border-white/20 shadow-2xl transform hover:shadow-2xl transition-all duration-300">
+        <Card className="w-full backdrop-blur-lg bg-white/10 border-white/20 shadow-2xl transform hover:shadow-2xl transition-all duration-300 rounded-2xl rotating-border">
           <CardHeader className="text-center">
             <CardTitle>Registro</CardTitle>
           </CardHeader>
