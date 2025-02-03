@@ -58,24 +58,32 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <div className="h-[40vh] w-full relative bg-gradient-to-b from-primary/20 to-background">
-        <img
-          src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4"
-          alt="Restaurant interior"
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
-        />
-        <div className="absolute inset-0 flex items-center justify-center flex-col space-y-6">
-          {/* Logo circular con sombra */}
-          <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-white shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
+      <div className="min-h-[60vh] w-full relative overflow-hidden bg-gradient-to-b from-primary/5 to-background/0">
+        <div className="absolute inset-0 w-full h-full">
+          <div className="absolute inset-0 bg-blue-900/30 mix-blend-overlay"></div>
+          <img
+            src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4"
+            alt="Restaurant interior"
+            className="w-full h-full object-cover opacity-40"
+          />
+        </div>
+        <div className="absolute inset-0 flex items-center justify-center flex-col space-y-8 z-10">
+          <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full glass-effect p-2 animate-float">
             <img
               src={config.branding.logoUrl || "https://via.placeholder.com/200"}
               alt={config.branding.name}
-              className="w-full h-full object-cover"
+              className="w-full h-full rounded-full object-cover"
             />
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary text-center px-4">
-            Únete a Nuestro Programa VIP
-          </h1>
+          <div className="text-center space-y-4 max-w-4xl px-4">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight leading-tight">
+              Un Método Directo y Simple para Entregar
+              <span className="text-blue-400"> Ofertas Móviles</span>
+            </h1>
+            <p className="text-xl sm:text-2xl text-blue-100/90 font-light">
+              Programas de Lealtad y ¡Mucho Más!
+            </p>
+          </div>
         </div>
       </div>
 
