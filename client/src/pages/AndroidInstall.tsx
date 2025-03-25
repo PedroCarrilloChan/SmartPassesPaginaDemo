@@ -83,6 +83,7 @@ export default function AndroidInstall() {
         description: "Las instrucciones han sido enviadas a tu correo electrónico.",
       });
     } catch (error) {
+      console.error('Error en el envío de correo:', error);
       toast({
         variant: "destructive",
         title: "Error",

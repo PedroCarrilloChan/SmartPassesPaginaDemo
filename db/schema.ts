@@ -1,1 +1,1 @@
-// Este archivo se mantiene como un placeholder para futuras implementaciones si son necesarias
+// No se requiere esquema de base de datos local ya que todos los datos se almacenan en la API de Wallet Club
