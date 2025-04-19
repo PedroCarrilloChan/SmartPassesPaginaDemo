@@ -38,8 +38,10 @@ export default function ThankYou() {
             />
           </div>
           
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white">¡Gracias!</h1>
-          <p className="text-base sm:text-xl md:text-2xl text-white/80 max-w-md text-center">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold">
+            <span className="text-[#2D2D2D]">¡Gracias!</span>
+          </h1>
+          <p className="text-base sm:text-xl md:text-2xl text-[#10A852] font-medium max-w-md text-center">
             Tu registro ha sido completado exitosamente
           </p>
         </div>
@@ -49,32 +51,33 @@ export default function ThankYou() {
       <div className="flex-1 container max-w-2xl mx-auto px-4 py-6 sm:py-8 md:py-12">
         <Card className="glass-card w-full transform transition-all duration-300 shadow-2xl relative overflow-hidden rounded-xl sm:rounded-2xl">
           <CardHeader className="text-center p-4 pb-2">
-            <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold text-white">
-              Bienvenido a Nuestro Programa VIP
+            <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold">
+              <span className="text-[#2D2D2D]">Smart</span>
+              <span className="text-[#10A852]">Passes</span>
             </CardTitle>
           </CardHeader>
           
           <CardContent className="p-4 space-y-4 sm:space-y-6 md:space-y-8">
             {isDesktop && (
-              <div className="bg-yellow-500/20 backdrop-blur-md border-l-4 border-yellow-400 p-3 sm:p-4 rounded-md">
+              <div className="bg-[#FBC02D]/20 backdrop-blur-md border-l-4 border-[#FBC02D] p-3 sm:p-4 rounded-md">
                 <div className="flex items-start sm:items-center">
-                  <AlertCircle className="h-5 w-5 text-yellow-300 mr-2 flex-shrink-0 mt-0.5 sm:mt-0" />
-                  <p className="text-xs sm:text-sm text-white font-medium">
-                    Recuerda que las tarjetas VIP son únicamente para dispositivos móviles. Por favor, accede desde tu teléfono Android o iPhone para completar la instalación.
+                  <AlertCircle className="h-5 w-5 text-[#FBC02D] mr-2 flex-shrink-0 mt-0.5 sm:mt-0" />
+                  <p className="text-xs sm:text-sm text-[#2D2D2D] font-medium">
+                    Recuerda que las tarjetas digitales son únicamente para dispositivos móviles. Por favor, accede desde tu teléfono Android o iPhone para completar la instalación.
                   </p>
                 </div>
               </div>
             )}
 
-            <p className="text-base sm:text-lg text-center text-white font-medium">
+            <p className="text-base sm:text-lg text-center text-[#2D2D2D] font-medium">
               Descarga nuestra tarjeta digital para comenzar a disfrutar de tus beneficios exclusivos
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center py-2 sm:py-4">
               <Button 
                 className="flex-1 max-w-xs mx-auto h-14 sm:h-16 text-base sm:text-lg font-medium transition-all duration-300 
-                           hover:scale-105 active:scale-95 shadow-lg bg-gradient-to-r from-green-500 to-emerald-600
-                           hover:shadow-green-600/30 backdrop-blur-md" 
+                           hover:scale-105 active:scale-95 shadow-lg bg-[#10A852] hover:bg-[#0E9A4A]
+                           hover:shadow-[#10A852]/30 backdrop-blur-md" 
                 onClick={() => navigate('/android-install')}
               >
                 <SiAndroid className="mr-2 sm:mr-3 h-6 sm:h-7 w-6 sm:w-7" />
@@ -82,8 +85,8 @@ export default function ThankYou() {
               </Button>
               <Button 
                 className="flex-1 max-w-xs mx-auto h-14 sm:h-16 text-base sm:text-lg font-medium transition-all duration-300 
-                           hover:scale-105 active:scale-95 shadow-lg bg-gradient-to-r from-blue-500 to-indigo-600
-                           hover:shadow-blue-600/30 backdrop-blur-md" 
+                           hover:scale-105 active:scale-95 shadow-lg bg-[#0A85FF] hover:bg-[#0978E3]
+                           hover:shadow-[#0A85FF]/30 backdrop-blur-md" 
                 onClick={() => navigate('/iphone-install')}
               >
                 <SiApple className="mr-2 sm:mr-3 h-6 sm:h-7 w-6 sm:w-7" />

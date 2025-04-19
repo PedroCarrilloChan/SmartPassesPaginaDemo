@@ -86,12 +86,14 @@ export default function Home() {
           
           {/* Título con tipografía mejorada - Responsivo */}
           <div className="text-center space-y-2 sm:space-y-4 w-full max-w-4xl px-2 sm:px-4">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-tight">
-              <span className="block sm:inline">Un Método Directo y Simple</span>{" "}
-              <span className="block sm:inline">para Entregar</span>
-              <span className="bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text block sm:inline"> Ofertas Móviles</span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
+              <span className="block sm:inline text-[#2D2D2D]">Smart</span>{" "}
+              <span className="block sm:inline text-[#10A852]">Passes</span>{" "}
+              <span className="block sm:inline text-[#2D2D2D]">-</span>{" "}
+              <span className="block sm:inline">Un Método Directo</span>{" "}
+              <span className="block sm:inline text-[#0A85FF]">para Tarjetas Digitales</span>
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-blue-100/90 font-light max-w-2xl mx-auto mt-2">
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-700 font-light max-w-2xl mx-auto mt-2">
               Programas de Lealtad y ¡Mucho Más!
             </p>
           </div>
@@ -176,8 +178,8 @@ export default function Home() {
                 />
                 <Button
                   type="submit"
-                  className="w-full h-11 sm:h-12 text-base sm:text-lg font-medium bg-gradient-to-r from-blue-500 to-indigo-600 hover:shadow-lg
-                             hover:shadow-blue-500/30 transform hover:scale-[1.02] transition-all duration-300 mt-2"
+                  className="w-full h-11 sm:h-12 text-base sm:text-lg font-medium bg-gradient-to-r from-[#0A85FF] to-[#10A852] hover:shadow-lg
+                             hover:shadow-[#0A85FF]/30 transform hover:scale-[1.02] transition-all duration-300 mt-2"
                 >
                   Registrarse
                 </Button>
