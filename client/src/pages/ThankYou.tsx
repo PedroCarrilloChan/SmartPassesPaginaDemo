@@ -39,9 +39,9 @@ export default function ThankYou() {
           </div>
           
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold">
-            <span className="text-[#2D2D2D]">¡Gracias!</span>
+            <span className="text-[#2D2D2D] drop-shadow-[0_2px_2px_rgba(255,255,255,0.8)]">¡Gracias!</span>
           </h1>
-          <p className="text-base sm:text-xl md:text-2xl text-[#10A852] font-medium max-w-md text-center">
+          <p className="text-base sm:text-xl md:text-2xl text-[#10A852] font-medium max-w-md text-center drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
             Tu registro ha sido completado exitosamente
           </p>
         </div>
@@ -52,8 +52,8 @@ export default function ThankYou() {
         <Card className="glass-card w-full transform transition-all duration-300 shadow-2xl relative overflow-hidden rounded-xl sm:rounded-2xl">
           <CardHeader className="text-center p-4 pb-2">
             <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold">
-              <span className="text-[#2D2D2D]">Smart</span>
-              <span className="text-[#10A852]">Passes</span>
+              <span className="text-[#2D2D2D] drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">Smart</span>
+              <span className="text-[#10A852] drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">Passes</span>
             </CardTitle>
           </CardHeader>
           
@@ -62,14 +62,14 @@ export default function ThankYou() {
               <div className="bg-[#FBC02D]/20 backdrop-blur-md border-l-4 border-[#FBC02D] p-3 sm:p-4 rounded-md">
                 <div className="flex items-start sm:items-center">
                   <AlertCircle className="h-5 w-5 text-[#FBC02D] mr-2 flex-shrink-0 mt-0.5 sm:mt-0" />
-                  <p className="text-xs sm:text-sm text-[#2D2D2D] font-medium">
+                  <p className="text-xs sm:text-sm text-[#2D2D2D] font-medium drop-shadow-[0_1px_1px_rgba(255,255,255,0.7)]">
                     Recuerda que las tarjetas digitales son únicamente para dispositivos móviles. Por favor, accede desde tu teléfono Android o iPhone para completar la instalación.
                   </p>
                 </div>
               </div>
             )}
 
-            <p className="text-base sm:text-lg text-center text-[#2D2D2D] font-medium">
+            <p className="text-base sm:text-lg text-center text-[#2D2D2D] font-medium drop-shadow-[0_1px_1px_rgba(255,255,255,0.7)]">
               Descarga nuestra tarjeta digital para comenzar a disfrutar de tus beneficios exclusivos
             </p>
 

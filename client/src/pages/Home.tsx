@@ -87,13 +87,13 @@ export default function Home() {
           {/* Título con tipografía mejorada - Responsivo */}
           <div className="text-center space-y-2 sm:space-y-4 w-full max-w-4xl px-2 sm:px-4">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
-              <span className="block sm:inline text-[#2D2D2D]">Smart</span>{" "}
-              <span className="block sm:inline text-[#10A852]">Passes</span>{" "}
-              <span className="block sm:inline text-[#2D2D2D]">-</span>{" "}
-              <span className="block sm:inline">Un Método Directo</span>{" "}
-              <span className="block sm:inline text-[#0A85FF]">para Tarjetas Digitales</span>
+              <span className="block sm:inline text-[#2D2D2D] drop-shadow-[0_2px_2px_rgba(255,255,255,0.8)]">Smart</span>{" "}
+              <span className="block sm:inline text-[#10A852] drop-shadow-[0_2px_2px_rgba(255,255,255,0.8)]">Passes</span>{" "}
+              <span className="block sm:inline text-[#2D2D2D] drop-shadow-[0_2px_2px_rgba(255,255,255,0.8)]">-</span>{" "}
+              <span className="block sm:inline text-[#2D2D2D] drop-shadow-[0_2px_2px_rgba(255,255,255,0.8)]">Un Método Directo</span>{" "}
+              <span className="block sm:inline text-[#0A85FF] drop-shadow-[0_2px_2px_rgba(255,255,255,0.8)]">para Tarjetas Digitales</span>
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-700 font-light max-w-2xl mx-auto mt-2">
+            <p className="text-lg sm:text-xl md:text-2xl text-[#2D2D2D] font-medium max-w-2xl mx-auto mt-2 drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
               Programas de Lealtad y ¡Mucho Más!
             </p>
           </div>
