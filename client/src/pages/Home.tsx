@@ -75,8 +75,8 @@ export default function Home() {
       {/* Header con logo y título */}
       <div className="relative z-10 w-full overflow-hidden pt-12 pb-8">
         <div className="container mx-auto flex flex-col items-center justify-center">
-          {/* Logo con efecto de brillo y sombra */}
-          <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full glass-card p-2 animate-float shimmer shadow-2xl mb-8">
+          {/* Logo con sombra */}
+          <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full glass-card p-2 animate-float shadow-2xl mb-8">
             <img
               src={config.branding.logoUrl || "https://via.placeholder.com/200"}
               alt={config.branding.name}
@@ -84,9 +84,9 @@ export default function Home() {
             />
           </div>
           
-          {/* Título con tipografía mejorada y texto brillante */}
+          {/* Título con tipografía mejorada */}
           <div className="text-center space-y-4 max-w-4xl px-4">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight leading-tight glow-text">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight leading-tight">
               Un Método Directo y Simple para Entregar
               <span className="bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text"> Ofertas Móviles</span>
             </h1>
@@ -99,10 +99,10 @@ export default function Home() {
 
       {/* Formulario con efecto glassmorphism */}
       <div className="relative z-10 flex-1 container max-w-lg mx-auto px-4 py-8">
-        <Card className="glass-card w-full backdrop-blur-xl bg-white/10 border border-white/20 shadow-2xl 
-                        transform hover:shadow-2xl transition-all duration-300 rounded-2xl shimmer">
+        <Card className="glass-card w-full backdrop-blur-xl bg-white/15 border border-white/20 shadow-2xl 
+                        transform hover:shadow-2xl transition-all duration-300 rounded-2xl">
           <CardHeader className="text-center pb-2">
-            <CardTitle className="text-2xl font-bold glow-text">Registro</CardTitle>
+            <CardTitle className="text-2xl font-bold text-white">Registro</CardTitle>
           </CardHeader>
           <CardContent className="pt-4">
             <Form {...form}>
@@ -112,11 +112,11 @@ export default function Home() {
                   name="firstName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium">Nombre</FormLabel>
+                      <FormLabel className="font-medium text-white">Nombre</FormLabel>
                       <FormControl>
-                        <Input placeholder="Juan" {...field} className="h-11 bg-white/10 backdrop-blur-md" />
+                        <Input placeholder="Juan" {...field} className="h-11 bg-white/20 backdrop-blur-md text-white" />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="font-medium text-red-300" />
                     </FormItem>
                   )}
                 />
@@ -125,11 +125,11 @@ export default function Home() {
                   name="lastName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium">Apellido</FormLabel>
+                      <FormLabel className="font-medium text-white">Apellido</FormLabel>
                       <FormControl>
-                        <Input placeholder="Pérez" {...field} className="h-11 bg-white/10 backdrop-blur-md" />
+                        <Input placeholder="Pérez" {...field} className="h-11 bg-white/20 backdrop-blur-md text-white" />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="font-medium text-red-300" />
                     </FormItem>
                   )}
                 />
@@ -138,16 +138,16 @@ export default function Home() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium">Correo Electrónico</FormLabel>
+                      <FormLabel className="font-medium text-white">Correo Electrónico</FormLabel>
                       <FormControl>
                         <Input
                           type="email"
                           placeholder="juan@ejemplo.com"
                           {...field}
-                          className="h-11 bg-white/10 backdrop-blur-md"
+                          className="h-11 bg-white/20 backdrop-blur-md text-white"
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="font-medium text-red-300" />
                     </FormItem>
                   )}
                 />
@@ -156,7 +156,7 @@ export default function Home() {
                   name="phone"
                   render={({ field: { onChange, value, ...field } }) => (
                     <FormItem>
-                      <FormLabel className="font-medium">Número de Teléfono</FormLabel>
+                      <FormLabel className="font-medium text-white">Número de Teléfono</FormLabel>
                       <FormControl>
                         <PhoneInput
                           country={'mx'}
@@ -164,19 +164,19 @@ export default function Home() {
                           enableSearch={true}
                           value={value}
                           onChange={(phone) => onChange(`+${phone}`)}
-                          inputClass="w-full p-2 rounded-md border border-white/30 bg-white/10 backdrop-blur-md text-white h-11"
+                          inputClass="w-full p-2 rounded-md border border-white/30 bg-white/20 backdrop-blur-md text-white h-11"
                           containerClass="phone-input"
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="font-medium text-red-300" />
                     </FormItem>
                   )}
                 />
                 <Button
                   type="submit"
                   className="w-full h-12 text-lg font-medium bg-gradient-to-r from-blue-500 to-indigo-600 hover:shadow-lg
-                             hover:shadow-blue-500/30 transform hover:scale-[1.02] transition-all duration-300 glow-effect"
+                             hover:shadow-blue-500/30 transform hover:scale-[1.02] transition-all duration-300"
                 >
                   Registrarse
                 </Button>

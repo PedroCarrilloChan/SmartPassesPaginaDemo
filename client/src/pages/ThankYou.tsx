@@ -29,9 +29,7 @@ export default function ThankYou() {
         
         {/* Texto central con animación */}
         <div className="absolute inset-0 flex items-center justify-center flex-col space-y-4">
-          <div className="shimmer">
-            <h1 className="text-5xl md:text-7xl font-bold text-white glow-text">¡Gracias!</h1>
-          </div>
+          <h1 className="text-5xl md:text-7xl font-bold text-white">¡Gracias!</h1>
           <p className="text-xl md:text-2xl text-white/80 max-w-md text-center">
             Tu registro ha sido completado exitosamente
           </p>
@@ -40,30 +38,25 @@ export default function ThankYou() {
 
       <div className="flex-1 container max-w-2xl mx-auto px-4 py-12">
         <Card className="glass-card w-full transform transition-all duration-300 shadow-2xl relative overflow-hidden">
-          {/* Efecto de brillo en el borde */}
-          <div className="absolute inset-0 rounded-2xl overflow-hidden">
-            <div className="shimmer absolute inset-0"></div>
-          </div>
-          
-          <CardHeader className="text-center pb-2 relative z-10">
-            <CardTitle className="text-2xl md:text-3xl font-bold glow-text bg-gradient-to-r from-blue-100 to-white text-transparent bg-clip-text">
+          <CardHeader className="text-center pb-2">
+            <CardTitle className="text-2xl md:text-3xl font-bold text-white">
               Bienvenido a Nuestro Programa VIP
             </CardTitle>
           </CardHeader>
           
-          <CardContent className="space-y-8 relative z-10">
+          <CardContent className="space-y-8">
             {isDesktop && (
-              <div className="bg-yellow-500/10 backdrop-blur-md border-l-4 border-yellow-400 p-4 rounded-md">
+              <div className="bg-yellow-500/20 backdrop-blur-md border-l-4 border-yellow-400 p-4 rounded-md">
                 <div className="flex items-center">
                   <AlertCircle className="h-5 w-5 text-yellow-300 mr-2" />
-                  <p className="text-sm text-white/90">
+                  <p className="text-sm text-white font-medium">
                     Recuerda que las tarjetas VIP son únicamente para dispositivos móviles. Por favor, accede desde tu teléfono Android o iPhone para completar la instalación.
                   </p>
                 </div>
               </div>
             )}
 
-            <p className="text-lg text-center text-white/80">
+            <p className="text-lg text-center text-white font-medium">
               Descarga nuestra tarjeta digital para comenzar a disfrutar de tus beneficios exclusivos
             </p>
 

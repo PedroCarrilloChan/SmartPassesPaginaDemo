@@ -147,13 +147,9 @@ input {
   @apply text-white/90 !important;
 }
 
-/* Glowing elements */
-.glow-effect {
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
-}
-
-.glow-text {
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+/* Cards y elementos interactivos */
+.glass-card:hover {
+  box-shadow: 0 10px 40px 0 rgba(31, 38, 135, 0.3);
 }
 
 /* Custom scrollbar */
