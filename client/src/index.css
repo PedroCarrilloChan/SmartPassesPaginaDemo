@@ -79,9 +79,9 @@ button:active {
 
 /* Phone Input Styles */
 .phone-input .form-control {
-  @apply w-full border-input bg-white/10 backdrop-blur-md text-black;
+  @apply w-full border-input bg-white/10 backdrop-blur-md text-gray-800;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .phone-input .flag-dropdown {
@@ -142,12 +142,13 @@ button:active {
 }
 
 input::placeholder {
-  @apply text-white/70 !important;
+  @apply text-gray-600/90 !important;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
 }
 
 input {
-  @apply text-black !important;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
+  @apply text-gray-800 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 /* Cards y elementos interactivos */
