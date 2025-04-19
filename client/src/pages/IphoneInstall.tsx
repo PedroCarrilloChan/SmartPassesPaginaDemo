@@ -153,28 +153,28 @@ export default function IphoneInstall() {
       
       <Card className="max-w-lg mx-auto shadow-2xl glass-card backdrop-blur-xl bg-white/15 border border-white/20 relative z-10 rounded-xl sm:rounded-2xl">
         <CardContent className="pt-6 space-y-5 sm:space-y-6 p-4 sm:p-6">
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-4 text-white">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-4 text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">
             Bienvenido {loyaltyData?.firstName}
           </h1>
 
           <div className="bg-white/10 backdrop-blur-md p-4 sm:p-6 rounded-lg space-y-4 sm:space-y-6 border border-white/10">
             <div className="space-y-4 sm:space-y-6">
               <div className="space-y-2 sm:space-y-3">
-                <h2 className="text-base sm:text-lg font-semibold flex items-center text-white">
+                <h2 className="text-base sm:text-lg font-semibold flex items-center text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">
                   <span className="bg-blue-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center mr-2 text-sm shadow-md">1</span>
                   Primer Paso
                 </h2>
-                <p className="text-sm sm:text-base text-white/90">
+                <p className="text-sm sm:text-base text-white shadow-sm font-medium">
                   Toca el botón "Obtener mi tarjeta" para abrir la tarjeta:
                 </p>
               </div>
 
               <div className="space-y-2 sm:space-y-3 pt-2">
-                <h2 className="text-base sm:text-lg font-semibold flex items-center text-white">
+                <h2 className="text-base sm:text-lg font-semibold flex items-center text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">
                   <span className="bg-blue-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center mr-2 text-sm shadow-md">2</span>
                   Segundo Paso
                 </h2>
-                <p className="text-sm sm:text-base text-white/90">
+                <p className="text-sm sm:text-base text-white shadow-sm font-medium">
                   Luego, toca el botón "Añadir" como se muestra:
                 </p>
                 <div className="bg-white/5 backdrop-blur-sm p-1 rounded-lg">
@@ -260,7 +260,7 @@ export default function IphoneInstall() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="correo@ejemplo.com"
-                      className="h-10 sm:h-11 bg-white/30 backdrop-blur-md text-black border-white/30"
+                      className="h-10 sm:h-11 bg-white/30 backdrop-blur-md text-gray-800 border-white/30 shadow-sm"
                     />
                     <Button
                       onClick={handleSendEmail}
