@@ -79,7 +79,7 @@ button:active {
 
 /* Phone Input Styles */
 .phone-input .form-control {
-  @apply w-full border-input bg-white/10 backdrop-blur-md text-foreground;
+  @apply w-full border-input bg-white/10 backdrop-blur-md text-black;
 }
 
 .phone-input .flag-dropdown {
@@ -140,11 +140,11 @@ button:active {
 }
 
 input::placeholder {
-  @apply text-white/50 !important;
+  @apply text-white/70 !important;
 }
 
 input {
-  @apply text-white/90 !important;
+  @apply text-black !important;
 }
 
 /* Cards y elementos interactivos */
