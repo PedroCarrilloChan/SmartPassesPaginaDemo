@@ -285,7 +285,7 @@ export default function AndroidInstall() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="correo@ejemplo.com"
-                      className="h-10 sm:h-11 bg-white/20 backdrop-blur-md text-white border-white/30"
+                      className="h-10 sm:h-11 bg-white/30 backdrop-blur-md text-black border-white/30"
                     />
                     <Button
                       onClick={handleSendEmail}
