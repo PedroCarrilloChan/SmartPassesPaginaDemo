@@ -6,8 +6,8 @@ import fetch from "node-fetch";
 const SERVER_CONFIG = {
   walletClub: {
     programId: process.env.WALLET_CLUB_PROGRAM_ID || "4886905521176576",
-    apiKey: process.env.WALLET_CLUB_API_KEY || "hSFGTPiMDxYGijWEklMFIRzEPAlxLwOTNRiUiyOwgzfPBvnWpalPZFpbHtjanpOZ",
-    baseUrl: "https://pass.walletclub.io/api/v1",
+    apiKey: process.env.WALLET_CLUB_API_KEY || "anUdPurYdfzRyJruhKOCLliqoLKLNQPcydVziMDagAjIBzkVRyMAIaicdQLhFmiq",
+    baseUrl: "https://pass.smartpasses.io/api/v1",
   },
   externalServices: {
     androidInstallUrl: process.env.ANDROID_INSTALL_URL || "https://android-instalacion-automatica-onlinemidafilia.replit.app/generateLink",
