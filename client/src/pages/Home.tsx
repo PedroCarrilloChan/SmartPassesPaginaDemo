@@ -72,11 +72,11 @@ export default function Home() {
         <div className="absolute inset-0 backdrop-blur-[2px]"></div>
       </div>
 
-      {/* Header con logo y título */}
-      <div className="relative z-10 w-full overflow-hidden pt-12 pb-8">
-        <div className="container mx-auto flex flex-col items-center justify-center">
-          {/* Logo con sombra */}
-          <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full glass-card p-2 animate-float shadow-2xl mb-8">
+      {/* Header con logo y título - Mejorado para responsividad */}
+      <div className="relative z-10 w-full overflow-hidden py-6 sm:py-8 md:pt-12 md:pb-8">
+        <div className="container mx-auto flex flex-col items-center justify-center px-4">
+          {/* Logo con sombra - Tamaño adaptativo */}
+          <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-36 md:h-36 rounded-full glass-card p-2 animate-float shadow-2xl mb-4 sm:mb-6 md:mb-8">
             <img
               src={config.branding.logoUrl || "https://via.placeholder.com/200"}
               alt={config.branding.name}
@@ -84,39 +84,40 @@ export default function Home() {
             />
           </div>
           
-          {/* Título con tipografía mejorada */}
-          <div className="text-center space-y-4 max-w-4xl px-4">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight leading-tight">
-              Un Método Directo y Simple para Entregar
-              <span className="bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text"> Ofertas Móviles</span>
+          {/* Título con tipografía mejorada - Responsivo */}
+          <div className="text-center space-y-2 sm:space-y-4 w-full max-w-4xl px-2 sm:px-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-tight">
+              <span className="block sm:inline">Un Método Directo y Simple</span>{" "}
+              <span className="block sm:inline">para Entregar</span>
+              <span className="bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text block sm:inline"> Ofertas Móviles</span>
             </h1>
-            <p className="text-xl sm:text-2xl text-blue-100/90 font-light max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl md:text-2xl text-blue-100/90 font-light max-w-2xl mx-auto mt-2">
               Programas de Lealtad y ¡Mucho Más!
             </p>
           </div>
         </div>
       </div>
 
-      {/* Formulario con efecto glassmorphism */}
-      <div className="relative z-10 flex-1 container max-w-lg mx-auto px-4 py-8">
+      {/* Formulario con efecto glassmorphism - Mejorado para responsividad */}
+      <div className="relative z-10 flex-1 container max-w-lg mx-auto px-4 py-6 sm:py-8">
         <Card className="glass-card w-full backdrop-blur-xl bg-white/15 border border-white/20 shadow-2xl 
-                        transform hover:shadow-2xl transition-all duration-300 rounded-2xl">
-          <CardHeader className="text-center pb-2">
-            <CardTitle className="text-2xl font-bold text-white">Registro</CardTitle>
+                        transform hover:shadow-2xl transition-all duration-300 rounded-xl sm:rounded-2xl">
+          <CardHeader className="text-center p-4 sm:pb-2">
+            <CardTitle className="text-xl sm:text-2xl font-bold text-white">Registro</CardTitle>
           </CardHeader>
-          <CardContent className="pt-4">
+          <CardContent className="p-4 sm:pt-4">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
                 <FormField
                   control={form.control}
                   name="firstName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium text-white">Nombre</FormLabel>
+                      <FormLabel className="font-medium text-white text-sm sm:text-base">Nombre</FormLabel>
                       <FormControl>
-                        <Input placeholder="Juan" {...field} className="h-11 bg-white/20 backdrop-blur-md text-white" />
+                        <Input placeholder="Juan" {...field} className="h-10 sm:h-11 bg-white/20 backdrop-blur-md text-white" />
                       </FormControl>
-                      <FormMessage className="font-medium text-red-300" />
+                      <FormMessage className="text-xs sm:text-sm font-medium text-red-300" />
                     </FormItem>
                   )}
                 />
@@ -125,11 +126,11 @@ export default function Home() {
                   name="lastName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium text-white">Apellido</FormLabel>
+                      <FormLabel className="font-medium text-white text-sm sm:text-base">Apellido</FormLabel>
                       <FormControl>
-                        <Input placeholder="Pérez" {...field} className="h-11 bg-white/20 backdrop-blur-md text-white" />
+                        <Input placeholder="Pérez" {...field} className="h-10 sm:h-11 bg-white/20 backdrop-blur-md text-white" />
                       </FormControl>
-                      <FormMessage className="font-medium text-red-300" />
+                      <FormMessage className="text-xs sm:text-sm font-medium text-red-300" />
                     </FormItem>
                   )}
                 />
@@ -138,16 +139,16 @@ export default function Home() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium text-white">Correo Electrónico</FormLabel>
+                      <FormLabel className="font-medium text-white text-sm sm:text-base">Correo Electrónico</FormLabel>
                       <FormControl>
                         <Input
                           type="email"
                           placeholder="juan@ejemplo.com"
                           {...field}
-                          className="h-11 bg-white/20 backdrop-blur-md text-white"
+                          className="h-10 sm:h-11 bg-white/20 backdrop-blur-md text-white"
                         />
                       </FormControl>
-                      <FormMessage className="font-medium text-red-300" />
+                      <FormMessage className="text-xs sm:text-sm font-medium text-red-300" />
                     </FormItem>
                   )}
                 />
@@ -156,7 +157,7 @@ export default function Home() {
                   name="phone"
                   render={({ field: { onChange, value, ...field } }) => (
                     <FormItem>
-                      <FormLabel className="font-medium text-white">Número de Teléfono</FormLabel>
+                      <FormLabel className="font-medium text-white text-sm sm:text-base">Número de Teléfono</FormLabel>
                       <FormControl>
                         <PhoneInput
                           country={'mx'}
@@ -164,19 +165,19 @@ export default function Home() {
                           enableSearch={true}
                           value={value}
                           onChange={(phone) => onChange(`+${phone}`)}
-                          inputClass="w-full p-2 rounded-md border border-white/30 bg-white/20 backdrop-blur-md text-white h-11"
+                          inputClass="w-full p-2 rounded-md border border-white/30 bg-white/20 backdrop-blur-md text-white h-10 sm:h-11"
                           containerClass="phone-input"
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage className="font-medium text-red-300" />
+                      <FormMessage className="text-xs sm:text-sm font-medium text-red-300" />
                     </FormItem>
                   )}
                 />
                 <Button
                   type="submit"
-                  className="w-full h-12 text-lg font-medium bg-gradient-to-r from-blue-500 to-indigo-600 hover:shadow-lg
-                             hover:shadow-blue-500/30 transform hover:scale-[1.02] transition-all duration-300"
+                  className="w-full h-11 sm:h-12 text-base sm:text-lg font-medium bg-gradient-to-r from-blue-500 to-indigo-600 hover:shadow-lg
+                             hover:shadow-blue-500/30 transform hover:scale-[1.02] transition-all duration-300 mt-2"
                 >
                   Registrarse
                 </Button>
