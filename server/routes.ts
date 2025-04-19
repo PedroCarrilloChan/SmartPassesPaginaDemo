@@ -125,7 +125,7 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
-  // Android link generation proxy endpoint
+  // Android link generation proxy endpoint with retries
   app.post('/api/android-link', async (req, res) => {
     const { url } = req.body;
 
@@ -135,37 +135,83 @@ export function registerRoutes(app: Express): Server {
       });
     }
 
-    try {
-      console.log('Proxy: Iniciando request a servicio Android con URL:', url);
+    // Configuración de reintentos
+    const maxRetries = 3;
+    let retryCount = 0;
+    let lastError = null;
 
-      const response = await fetch(SERVER_CONFIG.externalServices.androidInstallUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          originalLink: url
-        })
-      });
+    while (retryCount < maxRetries) {
+      try {
+        console.log(`Proxy: Intento ${retryCount + 1}/${maxRetries} - Iniciando request a servicio Android con URL:`, url);
 
-      console.log('Proxy: Status de respuesta:', response.status);
+        // Usando AbortController para manejar timeout manualmente
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
+        
+        const response = await fetch(SERVER_CONFIG.externalServices.androidInstallUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            originalLink: url
+          }),
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Proxy: Error en respuesta:', errorText);
-        throw new Error(`Error del servidor: ${response.status} ${response.statusText}`);
+        console.log('Proxy: Status de respuesta:', response.status);
+
+        // Si la respuesta no es exitosa, intentar leer el cuerpo como texto para depuración
+        if (!response.ok) {
+          let errorText = '';
+          try {
+            errorText = await response.text();
+          } catch (e) {
+            errorText = 'No se pudo leer el cuerpo de la respuesta';
+          }
+          
+          console.error('Proxy: Error en respuesta:', errorText);
+          throw new Error(`Error del servidor: ${response.status} ${response.statusText}`);
+        }
+
+        // Intenta parsear la respuesta como JSON
+        let data;
+        try {
+          data = await response.json();
+        } catch (e) {
+          console.error('Proxy: Error al parsear respuesta JSON:', e);
+          throw new Error('Error al parsear la respuesta del servidor');
+        }
+
+        console.log('Proxy: Datos de respuesta:', data);
+
+        // Verificar que la respuesta tenga la estructura esperada
+        if (!data || typeof data !== 'object' || !('passwalletLink' in data)) {
+          throw new Error('Respuesta del servidor incompleta o malformada');
+        }
+
+        return res.json(data);
+      } catch (error) {
+        console.error(`Proxy: Error en intento ${retryCount + 1}/${maxRetries}:`, error);
+        lastError = error;
+        
+        // Si no es el último intento, esperar antes de reintentar con backoff exponencial
+        if (retryCount < maxRetries - 1) {
+          const backoffMs = Math.pow(2, retryCount) * 1000;
+          console.log(`Proxy: Esperando ${backoffMs}ms antes del siguiente intento...`);
+          await new Promise(resolve => setTimeout(resolve, backoffMs));
+          retryCount++;
+        } else {
+          // Último intento fallido, devolver error
+          console.error('Proxy: Todos los intentos fallidos');
+          return res.status(500).json({ 
+            error: lastError instanceof Error ? lastError.message : 'Error al generar link para Android después de múltiples intentos' 
+          });
+        }
       }
-
-      const data = await response.json();
-      console.log('Proxy: Datos de respuesta:', data);
-
-      res.json(data);
-    } catch (error) {
-      console.error('Proxy: Error al generar link:', error);
-      res.status(500).json({ 
-        error: error instanceof Error ? error.message : 'Error al generar link para Android' 
-      });
     }
   });
   app.post('/api/register', async (req, res) => {
@@ -207,36 +253,60 @@ export function registerRoutes(app: Express): Server {
         }
       );
 
-      const responseData = await response.json();
+      const responseData = await response.json() as {
+        errors?: Array<{field: string, reasons: string[]}>,
+        message?: string
+      };
       console.log('Respuesta de Wallet Club API:', JSON.stringify(responseData, null, 2));
 
       if (!response.ok) {
         console.error('Error en Wallet Club API:', JSON.stringify(responseData, null, 2));
 
-        if (responseData.errors?.some((error: any) => error.field === 'phone' && error.reasons.includes('Phone number already taken'))) {
-          return res.status(400).json({
-            success: false,
-            error: 'Este número de teléfono ya está registrado'
-          });
+        // Verificamos que responseData tenga la estructura esperada
+        if (responseData && typeof responseData === 'object' && 'errors' in responseData && Array.isArray(responseData.errors)) {
+          // Errores específicos para número de teléfono ya registrado
+          const hasPhoneTakenError = responseData.errors.some(
+            error => error.field === 'phone' && Array.isArray(error.reasons) && error.reasons.includes('Phone number already taken')
+          );
+          
+          if (hasPhoneTakenError) {
+            return res.status(400).json({
+              success: false,
+              error: 'Este número de teléfono ya está registrado'
+            });
+          }
+
+          // Errores de correo electrónico
+          const hasEmailError = responseData.errors.some(
+            error => error.field === 'email'
+          );
+          
+          if (hasEmailError) {
+            return res.status(400).json({
+              success: false,
+              error: 'Por favor ingrese un correo electrónico válido'
+            });
+          }
+
+          // Errores de teléfono
+          const hasPhoneError = responseData.errors.some(
+            error => error.field === 'phone'
+          );
+          
+          if (hasPhoneError) {
+            return res.status(400).json({
+              success: false,
+              error: 'Por favor ingrese un número de teléfono válido'
+            });
+          }
         }
 
-        if (responseData.errors?.some((error: any) => error.field === 'email')) {
-          return res.status(400).json({
-            success: false,
-            error: 'Por favor ingrese un correo electrónico válido'
-          });
-        }
-
-        if (responseData.errors?.some((error: any) => error.field === 'phone')) {
-          return res.status(400).json({
-            success: false,
-            error: 'Por favor ingrese un número de teléfono válido'
-          });
-        }
-
+        // Error genérico si no podemos determinar el tipo específico
         return res.status(400).json({
           success: false,
-          error: responseData.message || 'Error en el registro. Por favor intente nuevamente.'
+          error: responseData && typeof responseData === 'object' && 'message' in responseData 
+            ? responseData.message 
+            : 'Error en el registro. Por favor intente nuevamente.'
         });
       }
 
