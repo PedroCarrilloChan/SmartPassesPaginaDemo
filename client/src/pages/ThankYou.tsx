@@ -29,6 +29,15 @@ export default function ThankYou() {
         
         {/* Texto central con animación - Responsivo */}
         <div className="absolute inset-0 flex items-center justify-center flex-col px-4 space-y-2 sm:space-y-4">
+          {/* Logo */}
+          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full glass-card p-2 shadow-2xl mb-4">
+            <img
+              src={config.branding.logoUrl || "https://via.placeholder.com/200"}
+              alt={config.branding.name}
+              className="w-full h-full rounded-full object-cover"
+            />
+          </div>
+          
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white">¡Gracias!</h1>
           <p className="text-base sm:text-xl md:text-2xl text-white/80 max-w-md text-center">
             Tu registro ha sido completado exitosamente
