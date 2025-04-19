@@ -117,7 +117,7 @@ export default function Home() {
                     <FormItem>
                       <FormLabel className="font-medium text-white text-sm sm:text-base">Nombre</FormLabel>
                       <FormControl>
-                        <Input placeholder="Juan" {...field} className="h-10 sm:h-11 bg-white/20 backdrop-blur-md text-white placeholder:text-white/60" />
+                        <Input placeholder="Juan" {...field} className="h-10 sm:h-11 bg-white/30 backdrop-blur-md text-black placeholder:text-white/60" />
                       </FormControl>
                       <FormMessage className="text-xs sm:text-sm font-medium text-red-300" />
                     </FormItem>
@@ -130,7 +130,7 @@ export default function Home() {
                     <FormItem>
                       <FormLabel className="font-medium text-white text-sm sm:text-base">Apellido</FormLabel>
                       <FormControl>
-                        <Input placeholder="Pérez" {...field} className="h-10 sm:h-11 bg-white/20 backdrop-blur-md text-white placeholder:text-white/60" />
+                        <Input placeholder="Pérez" {...field} className="h-10 sm:h-11 bg-white/30 backdrop-blur-md text-black placeholder:text-white/60" />
                       </FormControl>
                       <FormMessage className="text-xs sm:text-sm font-medium text-red-300" />
                     </FormItem>
@@ -147,7 +147,7 @@ export default function Home() {
                           type="email"
                           placeholder="juan@ejemplo.com"
                           {...field}
-                          className="h-10 sm:h-11 bg-white/20 backdrop-blur-md text-white placeholder:text-white/60"
+                          className="h-10 sm:h-11 bg-white/30 backdrop-blur-md text-black placeholder:text-white/60"
                         />
                       </FormControl>
                       <FormMessage className="text-xs sm:text-sm font-medium text-red-300" />
@@ -167,7 +167,7 @@ export default function Home() {
                           enableSearch={true}
                           value={value}
                           onChange={(phone) => onChange(`+${phone}`)}
-                          inputClass="w-full p-2 rounded-md border border-white/30 bg-white/20 backdrop-blur-md text-white h-10 sm:h-11"
+                          inputClass="w-full p-2 rounded-md border border-white/30 bg-white/30 backdrop-blur-md text-black h-10 sm:h-11"
                           containerClass="phone-input"
                           {...field}
                         />
