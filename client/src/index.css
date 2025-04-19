@@ -8,9 +8,23 @@
   }
 
   body {
-    @apply font-sans antialiased bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-foreground;
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
+    @apply font-sans antialiased text-foreground;
+    background: linear-gradient(135deg, #2c3e50, #3498db, #1e3c72);
+    background-size: 300% 300%;
+    animation: gradient 20s ease infinite;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+    z-index: -1;
   }
 }
 
@@ -20,18 +34,37 @@
   100% { background-position: 0% 50%; }
 }
 
-.glass-effect {
-  @apply bg-white/20 backdrop-blur-xl border border-white/30 shadow-2xl;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+/* Glassmorphism styles */
+.glass-card {
+  @apply backdrop-blur-xl bg-white/10 border border-white/30 shadow-xl;
+  box-shadow: 
+    0 8px 32px 0 rgba(31, 38, 135, 0.2),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.15);
 }
 
 .card {
-  @apply backdrop-blur-lg bg-white/10 border-white/20;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  @apply backdrop-blur-xl bg-white/15 border border-white/20 shadow-xl;
+  box-shadow: 
+    0 8px 32px 0 rgba(31, 38, 135, 0.2),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.15);
 }
 
 input {
-  @apply bg-white/20 backdrop-blur-sm border-white/30 !important;
+  @apply bg-white/10 backdrop-blur-md border-white/30 !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+button {
+  @apply shadow-lg backdrop-blur-sm transition-all duration-300;
+}
+
+button:hover {
+  @apply shadow-xl backdrop-blur-xl;
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(1px);
 }
 
 .animate-float {
@@ -39,57 +72,62 @@ input {
 }
 
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-  100% { transform: translateY(0px); }
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
 }
 
 /* Phone Input Styles */
 .phone-input .form-control {
-  @apply w-full border-input bg-background text-foreground;
+  @apply w-full border-input bg-white/10 backdrop-blur-md text-foreground;
 }
 
 .phone-input .flag-dropdown {
-  @apply border-input bg-background;
+  @apply border-input bg-white/10 backdrop-blur-md;
 }
 
 .phone-input .selected-flag:hover,
 .phone-input .selected-flag:focus {
-  @apply bg-accent;
+  @apply bg-white/20;
 }
 
 .phone-input .country-list {
-  @apply bg-background border-input;
+  @apply bg-white/90 backdrop-blur-xl border-white/30;
 }
 
 .phone-input .country-list .country:hover {
-  @apply bg-accent;
-}
-
-.phone-input .country-list .country.highlight {
   @apply bg-primary/20;
 }
 
-/* Rotating border effect */
-.rotating-border {
+.phone-input .country-list .country.highlight {
+  @apply bg-primary/30;
+}
+
+/* Shimmering effect */
+.shimmer {
   position: relative;
   overflow: hidden;
 }
 
-.rotating-border::before {
+.shimmer::after {
   content: '';
   position: absolute;
-  inset: -5px;
-  background: conic-gradient(from 0deg, transparent 0%, rgba(255,255,255,0.4) 25%, transparent 50%);
-  animation: rotate 4s linear infinite;
-  border-radius: inherit;
-  z-index: -1;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.25), 
+    transparent
+  );
+  animation: shimmer 2s infinite;
 }
 
-@keyframes rotate {
-  100% {
-    transform: rotate(360deg);
-  }
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 200%; }
 }
 
 /* Form text color */
@@ -98,13 +136,41 @@ input {
 }
 
 .form-label {
-  color: white !important;
+  @apply text-white/90 font-medium !important;
 }
 
 input::placeholder {
-  color: rgba(255, 255, 255, 0.5) !important;
+  @apply text-white/50 !important;
 }
 
 input {
-  color: white !important;
+  @apply text-white/90 !important;
+}
+
+/* Glowing elements */
+.glow-effect {
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+}
+
+.glow-text {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
 }
