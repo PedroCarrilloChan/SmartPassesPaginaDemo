@@ -157,24 +157,24 @@ export default function IphoneInstall() {
             Bienvenido {loyaltyData?.firstName}
           </h1>
 
-          <div className="bg-white/10 backdrop-blur-md p-4 sm:p-6 rounded-lg space-y-4 sm:space-y-6 border border-white/10">
+          <div className="bg-white/20 backdrop-blur-md p-4 sm:p-6 rounded-lg space-y-4 sm:space-y-6 border border-white/30 shadow-lg">
             <div className="space-y-4 sm:space-y-6">
               <div className="space-y-2 sm:space-y-3">
-                <h2 className="text-base sm:text-lg font-semibold flex items-center text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">
+                <h2 className="text-base sm:text-lg font-bold flex items-center text-blue-900 drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
                   <span className="bg-blue-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center mr-2 text-sm shadow-md">1</span>
                   Primer Paso
                 </h2>
-                <p className="text-sm sm:text-base text-white shadow-sm font-medium">
+                <p className="text-sm sm:text-base text-blue-800 bg-white/40 p-2 rounded-md shadow-sm font-medium">
                   Toca el botón "Obtener mi tarjeta" para abrir la tarjeta:
                 </p>
               </div>
 
               <div className="space-y-2 sm:space-y-3 pt-2">
-                <h2 className="text-base sm:text-lg font-semibold flex items-center text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">
+                <h2 className="text-base sm:text-lg font-bold flex items-center text-blue-900 drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
                   <span className="bg-blue-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center mr-2 text-sm shadow-md">2</span>
                   Segundo Paso
                 </h2>
-                <p className="text-sm sm:text-base text-white shadow-sm font-medium">
+                <p className="text-sm sm:text-base text-blue-800 bg-white/40 p-2 rounded-md shadow-sm font-medium">
                   Luego, toca el botón "Añadir" como se muestra:
                 </p>
                 <div className="bg-white/5 backdrop-blur-sm p-1 rounded-lg">
