@@ -50,8 +50,8 @@
 }
 
 input {
-  @apply bg-white/10 backdrop-blur-md border-white/30 !important;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05), 0 0 8px rgba(0, 0, 0, 0.5);
+  @apply bg-white/40 backdrop-blur-md border-white/50 !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05), 0 0 8px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 button {
@@ -79,9 +79,10 @@ button:active {
 
 /* Phone Input Styles */
 .phone-input .form-control {
-  @apply w-full border-input bg-white/10 backdrop-blur-md text-gray-800;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  @apply w-full border-input bg-white/40 backdrop-blur-md text-blue-900 font-medium;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05), 0 0 8px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.02em;
 }
 
 .phone-input .flag-dropdown {
@@ -147,8 +148,9 @@ input::placeholder {
 }
 
 input {
-  @apply text-gray-800 !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  @apply text-blue-900 font-medium !important;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.02em;
 }
 
 /* Cards y elementos interactivos */
