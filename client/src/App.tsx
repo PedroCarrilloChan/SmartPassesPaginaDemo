@@ -8,6 +8,7 @@ import Loading from "@/pages/Loading";
 import ThankYou from "@/pages/ThankYou";
 import IphoneInstall from "@/pages/IphoneInstall";
 import AndroidInstall from "@/pages/AndroidInstall";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 function Router() {
   return (
@@ -25,6 +26,7 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <LanguageSwitcher />
       <Router />
       <Toaster />
     </QueryClientProvider>

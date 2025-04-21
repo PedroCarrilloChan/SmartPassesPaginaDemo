@@ -1,0 +1,82 @@
+{
+  "home": {
+    "title": "Smart Passes - A Direct Method for Digital Cards",
+    "subtitle": "Loyalty Programs and Much More!",
+    "register": "Registration",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "submitButton": "Register",
+    "errors": {
+      "registration": "Registration error. Please try again."
+    }
+  },
+  "loading": {
+    "title": "Please wait a moment...",
+    "subtitle": "We're preparing everything for you"
+  },
+  "thank_you": {
+    "title": "Thank You!",
+    "subtitle": "Your registration has been successfully completed",
+    "brandLabel": "Passes",
+    "desktopWarning": "Remember that digital cards are only for mobile devices. Please access from your Android phone or iPhone to complete the installation.",
+    "instruction": "Download our digital card to start enjoying your exclusive benefits",
+    "androidButton": "Android",
+    "iphoneButton": "iPhone"
+  },
+  "android_install": {
+    "title": "Welcome",
+    "step1Title": "First Step",
+    "step1Instruction": "Tap the blue button that says \"Install\" as shown:",
+    "step2Title": "Second Step",
+    "step2Instruction": "Then, tap the blue button that says \"Continue\":",
+    "callToAction": "Tap the button to begin! 👇",
+    "getCardButton": "Get my card",
+    "processingButton": "Processing...",
+    "retryButton": "Try again",
+    "qrInstructions": "You can also scan this QR code with your Android device!",
+    "emailOption": "Would you prefer to receive the instructions via email?",
+    "emailPlaceholder": "email@example.com",
+    "sendButton": "Send",
+    "emailSuccess": "✅ Email sent successfully. Please check your inbox or spam folder if you don't find it."
+  },
+  "iphone_install": {
+    "title": "Welcome",
+    "step1Title": "First Step",
+    "step1Instruction": "Tap the \"Get my card\" button to open the card:",
+    "step2Title": "Second Step",
+    "step2Instruction": "Then, tap the \"Add\" button as shown:",
+    "callToAction": "Tap the button to begin! 👇",
+    "getCardButton": "Get my card",
+    "processingButton": "Processing...",
+    "retryButton": "Try again",
+    "qrInstructions": "You can also scan this QR code with your iPhone!",
+    "emailOption": "Would you prefer to receive the instructions via email?",
+    "emailPlaceholder": "email@example.com",
+    "sendButton": "Send",
+    "emailSuccess": "✅ Email sent successfully. Please check your inbox or spam folder if you don't find it."
+  },
+  "language": {
+    "switchToEnglish": "Switch to English",
+    "switchToSpanish": "Cambiar a Español"
+  },
+  "errors": {
+    "phoneExisting": "This phone number is already registered",
+    "emailInvalid": "Please enter a valid email address",
+    "phoneInvalid": "Please enter a valid phone number",
+    "genericError": "Registration error. Please try again.",
+    "emailSendError": "Could not send the email. Please try again.",
+    "installUrlError": "Error processing the installation URL"
+  },
+  "validations": {
+    "firstNameRequired": "First name must have at least 2 characters",
+    "lastNameRequired": "Last name must have at least 2 characters",
+    "emailRequired": "Please enter a valid email address",
+    "phoneRequired": "Please enter a valid phone number"
+  },
+  "notifications": {
+    "emailSent": "Email Sent",
+    "emailSentDesc": "Instructions have been sent to your email address."
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "home": {
+    "title": "Smart Passes - Un Método Directo para Tarjetas Digitales",
+    "subtitle": "Programas de Lealtad y ¡Mucho Más!",
+    "register": "Registro",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "email": "Correo Electrónico",
+    "phone": "Número de Teléfono",
+    "submitButton": "Registrarse",
+    "errors": {
+      "registration": "Error en el registro. Por favor intente nuevamente."
+    }
+  },
+  "loading": {
+    "title": "Por favor espere un momento...",
+    "subtitle": "Estamos preparando todo para usted"
+  },
+  "thank_you": {
+    "title": "¡Gracias!",
+    "subtitle": "Tu registro ha sido completado exitosamente",
+    "brandLabel": "Passes",
+    "desktopWarning": "Recuerda que las tarjetas digitales son únicamente para dispositivos móviles. Por favor, accede desde tu teléfono Android o iPhone para completar la instalación.",
+    "instruction": "Descarga nuestra tarjeta digital para comenzar a disfrutar de tus beneficios exclusivos",
+    "androidButton": "Android",
+    "iphoneButton": "iPhone"
+  },
+  "android_install": {
+    "title": "Bienvenido",
+    "step1Title": "Primer Paso",
+    "step1Instruction": "Toca el botón azul que dice \"Instalar\" como se muestra:",
+    "step2Title": "Segundo Paso",
+    "step2Instruction": "Luego, toca el botón azul que dice \"Continuar\":",
+    "callToAction": "¡Toca el botón para comenzar! 👇",
+    "getCardButton": "Obtener mi tarjeta",
+    "processingButton": "Procesando...",
+    "retryButton": "Intentar nuevamente",
+    "qrInstructions": "¡También puedes escanear este código QR con tu dispositivo Android!",
+    "emailOption": "¿Prefieres recibir las instrucciones por correo electrónico?",
+    "emailPlaceholder": "correo@ejemplo.com",
+    "sendButton": "Enviar",
+    "emailSuccess": "✅ Correo enviado con éxito. Por favor, revisa tu bandeja de entrada o la carpeta de spam si no lo encuentras."
+  },
+  "iphone_install": {
+    "title": "Bienvenido",
+    "step1Title": "Primer Paso",
+    "step1Instruction": "Toca el botón \"Obtener mi tarjeta\" para abrir la tarjeta:",
+    "step2Title": "Segundo Paso",
+    "step2Instruction": "Luego, toca el botón \"Añadir\" como se muestra:",
+    "callToAction": "¡Toca el botón para comenzar! 👇",
+    "getCardButton": "Obtener mi tarjeta",
+    "processingButton": "Procesando...",
+    "retryButton": "Intentar nuevamente",
+    "qrInstructions": "¡También puedes escanear este código QR con tu iPhone!",
+    "emailOption": "¿Prefieres recibir las instrucciones por correo electrónico?",
+    "emailPlaceholder": "correo@ejemplo.com",
+    "sendButton": "Enviar",
+    "emailSuccess": "✅ Correo enviado con éxito. Por favor, revisa tu bandeja de entrada o la carpeta de spam si no lo encuentras."
+  },
+  "language": {
+    "switchToEnglish": "Switch to English",
+    "switchToSpanish": "Cambiar a Español"
+  },
+  "errors": {
+    "phoneExisting": "Este número de teléfono ya está registrado",
+    "emailInvalid": "Por favor ingrese un correo electrónico válido",
+    "phoneInvalid": "Por favor ingrese un número de teléfono válido",
+    "genericError": "Error en el registro. Por favor intente nuevamente.",
+    "emailSendError": "No se pudo enviar el correo. Por favor, intenta nuevamente.",
+    "installUrlError": "Error al procesar la URL de instalación"
+  },
+  "validations": {
+    "firstNameRequired": "El nombre debe tener al menos 2 caracteres",
+    "lastNameRequired": "El apellido debe tener al menos 2 caracteres",
+    "emailRequired": "Por favor ingrese un correo electrónico válido",
+    "phoneRequired": "Por favor ingrese un número de teléfono válido"
+  },
+  "notifications": {
+    "emailSent": "Correo enviado",
+    "emailSentDesc": "Las instrucciones han sido enviadas a tu correo electrónico."
+  }
+}
