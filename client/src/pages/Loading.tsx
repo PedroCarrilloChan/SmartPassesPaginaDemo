@@ -2,9 +2,11 @@ import { useEffect } from "react";
 import { useLocation } from "wouter";
 import { Loader2 } from "lucide-react";
 import { detectDevice } from "@/lib/utils";
+import { useTranslation } from 'react-i18next';
 
 export default function Loading() {
   const [, navigate] = useLocation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const deviceType = detectDevice();
@@ -47,10 +49,10 @@ export default function Loading() {
           
           {/* Mensajes */}
           <h2 className="mt-6 text-lg sm:text-xl font-semibold text-white">
-            Por favor espere un momento...
+            {t('loading.title')}
           </h2>
           <p className="mt-2 text-sm sm:text-base text-white/80">
-            Estamos preparando todo para usted
+            {t('loading.subtitle')}
           </p>
         </div>
       </div>

@@ -5,11 +5,13 @@ import { SiAndroid, SiApple } from "react-icons/si";
 import { config } from "@/config";
 import { detectDevice } from "@/lib/utils";
 import { AlertCircle } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 export default function ThankYou() {
   const [, navigate] = useLocation();
   const deviceType = detectDevice();
   const isDesktop = deviceType === 'desktop';
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -39,10 +41,10 @@ export default function ThankYou() {
           </div>
           
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold">
-            <span className="text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">¡Gracias!</span>
+            <span className="text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">{t('thank_you.title')}</span>
           </h1>
           <p className="text-base sm:text-xl md:text-2xl text-[#10A852] font-medium max-w-md text-center drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">
-            Tu registro ha sido completado exitosamente
+            {t('thank_you.subtitle')}
           </p>
         </div>
       </div>
@@ -53,7 +55,7 @@ export default function ThankYou() {
           <CardHeader className="text-center p-4 pb-2">
             <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold">
               <span className="text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">Smart</span>
-              <span className="text-[#10A852] drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">Passes</span>
+              <span className="text-[#10A852] drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">{t('thank_you.brandLabel')}</span>
             </CardTitle>
           </CardHeader>
           
@@ -63,14 +65,14 @@ export default function ThankYou() {
                 <div className="flex items-start sm:items-center">
                   <AlertCircle className="h-5 w-5 text-[#FBC02D] mr-2 flex-shrink-0 mt-0.5 sm:mt-0" />
                   <p className="text-xs sm:text-sm text-white font-medium drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">
-                    Recuerda que las tarjetas digitales son únicamente para dispositivos móviles. Por favor, accede desde tu teléfono Android o iPhone para completar la instalación.
+                    {t('thank_you.desktopWarning')}
                   </p>
                 </div>
               </div>
             )}
 
             <p className="text-base sm:text-lg text-center text-white font-medium drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">
-              Descarga nuestra tarjeta digital para comenzar a disfrutar de tus beneficios exclusivos
+              {t('thank_you.instruction')}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center py-2 sm:py-4">
@@ -81,7 +83,7 @@ export default function ThankYou() {
                 onClick={() => navigate('/android-install')}
               >
                 <SiAndroid className="mr-2 sm:mr-3 h-6 sm:h-7 w-6 sm:w-7" />
-                Android
+                {t('thank_you.androidButton')}
               </Button>
               <Button 
                 className="flex-1 max-w-xs mx-auto h-14 sm:h-16 text-base sm:text-lg font-medium transition-all duration-300 
@@ -90,7 +92,7 @@ export default function ThankYou() {
                 onClick={() => navigate('/iphone-install')}
               >
                 <SiApple className="mr-2 sm:mr-3 h-6 sm:h-7 w-6 sm:w-7" />
-                iPhone
+                {t('thank_you.iphoneButton')}
               </Button>
             </div>
 

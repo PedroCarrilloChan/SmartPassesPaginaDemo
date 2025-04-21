@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { loyaltyApi } from "@/lib/api";
 import { Loader2, ChevronRight, ScanLine, Send } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
+import { useTranslation } from 'react-i18next';
 
 export default function IphoneInstall() {
   const { toast } = useToast();
@@ -16,6 +17,7 @@ export default function IphoneInstall() {
   const [emailSent, setEmailSent] = useState(false);
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [email, setEmail] = useState<string>("");
+  const { t } = useTranslation();
 
   const { data: loyaltyData, isLoading: isDataLoading } = useQuery({
     queryKey: ["/api/loyalty-data"],
@@ -44,7 +46,7 @@ export default function IphoneInstall() {
       });
 
       if (!emailResponse.ok) {
-        throw new Error('Error al enviar el correo');
+        throw new Error(t('errors.emailSendError'));
       }
 
       // Esperar 3 segundos
@@ -60,7 +62,7 @@ export default function IphoneInstall() {
       });
 
       if (!urlResponse.ok) {
-        throw new Error('Error al enviar la URL de instalación');
+        throw new Error(t('errors.installUrlError'));
       }
 
       // Tercer request: enviar tipo de dispositivo
@@ -73,20 +75,20 @@ export default function IphoneInstall() {
       });
 
       if (!deviceResponse.ok) {
-        throw new Error('Error al enviar el tipo de dispositivo');
+        throw new Error(t('errors.emailSendError'));
       }
 
       setEmailSent(true);
       toast({
-        title: "Correo enviado",
-        description: "Las instrucciones han sido enviadas a tu correo electrónico.",
+        title: t('notifications.emailSent'),
+        description: t('notifications.emailSentDesc'),
       });
     } catch (error) {
       console.error('Error en el envío de correo:', error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "No se pudo enviar el correo. Por favor, intenta nuevamente.",
+        description: error instanceof Error ? error.message : t('errors.emailSendError'),
       });
     } finally {
       setIsSendingEmail(false);
@@ -103,7 +105,7 @@ export default function IphoneInstall() {
         setModifiedUrl(newUrl);
       } catch (error) {
         console.error('Failed to process URL:', error);
-        const errorMessage = error instanceof Error ? error.message : "Error al procesar la URL de instalación";
+        const errorMessage = error instanceof Error ? error.message : t('errors.installUrlError');
         setError(errorMessage);
         toast({
           variant: "destructive",
@@ -154,7 +156,7 @@ export default function IphoneInstall() {
       <Card className="max-w-lg mx-auto shadow-2xl glass-card backdrop-blur-xl bg-white/15 border border-white/20 relative z-10 rounded-xl sm:rounded-2xl">
         <CardContent className="pt-6 space-y-5 sm:space-y-6 p-4 sm:p-6">
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-4 text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">
-            Bienvenido {loyaltyData?.firstName}
+            {t('iphone_install.title')} {loyaltyData?.firstName}
           </h1>
 
           <div className="bg-white/20 backdrop-blur-md p-4 sm:p-6 rounded-lg space-y-4 sm:space-y-6 border border-white/30 shadow-lg">
@@ -162,20 +164,20 @@ export default function IphoneInstall() {
               <div className="space-y-2 sm:space-y-3">
                 <h2 className="text-base sm:text-lg font-bold flex items-center text-blue-900 drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
                   <span className="bg-blue-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center mr-2 text-sm shadow-md">1</span>
-                  Primer Paso
+                  {t('iphone_install.step1Title')}
                 </h2>
                 <p className="text-sm sm:text-base text-blue-800 bg-white/40 p-2 rounded-md shadow-sm font-medium">
-                  Toca el botón "Obtener mi tarjeta" para abrir la tarjeta:
+                  {t('iphone_install.step1Instruction')}
                 </p>
               </div>
 
               <div className="space-y-2 sm:space-y-3 pt-2">
                 <h2 className="text-base sm:text-lg font-bold flex items-center text-blue-900 drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
                   <span className="bg-blue-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center mr-2 text-sm shadow-md">2</span>
-                  Segundo Paso
+                  {t('iphone_install.step2Title')}
                 </h2>
                 <p className="text-sm sm:text-base text-blue-800 bg-white/40 p-2 rounded-md shadow-sm font-medium">
-                  Luego, toca el botón "Añadir" como se muestra:
+                  {t('iphone_install.step2Instruction')}
                 </p>
                 <div className="bg-white/5 backdrop-blur-sm p-1 rounded-lg">
                   <img
@@ -191,7 +193,7 @@ export default function IphoneInstall() {
 
           <div className="space-y-4">
             <p className="text-center text-sm sm:text-base text-white font-medium">
-              ¡Toca el botón para comenzar! 👇
+              {t('iphone_install.callToAction')}
             </p>
 
             {error ? (
@@ -204,7 +206,7 @@ export default function IphoneInstall() {
                             text-white font-medium transition-all duration-300 hover:shadow-lg"
                   onClick={() => processUrl()}
                 >
-                  Intentar nuevamente
+                  {t('iphone_install.retryButton')}
                 </Button>
               </div>
             ) : (
@@ -218,11 +220,11 @@ export default function IphoneInstall() {
                   {isProcessing ? (
                     <>
                       <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                      Procesando...
+                      {t('iphone_install.processingButton')}
                     </>
                   ) : (
                     <>
-                      Obtener mi tarjeta
+                      {t('iphone_install.getCardButton')}
                       <ChevronRight className="ml-2 h-5 w-5" />
                     </>
                   )}
@@ -236,7 +238,7 @@ export default function IphoneInstall() {
                       </div>
                     </div>
                     <p className="text-xs sm:text-sm font-medium text-center text-white/80">
-                      ¡También puedes escanear este código QR con tu iPhone!
+                      {t('iphone_install.qrInstructions')}
                     </p>
                     <div className="p-3 sm:p-4 bg-white rounded-lg sm:rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105">
                       <QRCodeSVG 
@@ -252,14 +254,14 @@ export default function IphoneInstall() {
                 {/* Sección de envío por correo */}
                 <div className="border-t border-white/10 pt-5 sm:pt-6 mt-6 sm:mt-8">
                   <p className="text-xs sm:text-sm text-center text-white/80 mb-3 sm:mb-4">
-                    ¿Prefieres recibir las instrucciones por correo electrónico?
+                    {t('iphone_install.emailOption')}
                   </p>
                   <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                     <Input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="correo@ejemplo.com"
+                      placeholder={t('iphone_install.emailPlaceholder')}
                       className="h-10 sm:h-11 bg-white/30 backdrop-blur-md text-gray-800 border-white/30 shadow-sm"
                     />
                     <Button
@@ -273,14 +275,14 @@ export default function IphoneInstall() {
                       ) : (
                         <>
                           <Send className="h-4 w-4 mr-2" />
-                          Enviar
+                          {t('iphone_install.sendButton')}
                         </>
                       )}
                     </Button>
                   </div>
                   {emailSent && (
                     <p className="text-xs sm:text-sm text-green-300 mt-2 text-center p-2 bg-green-500/10 rounded-md backdrop-blur-sm">
-                      ✅ Correo enviado con éxito. Por favor, revisa tu bandeja de entrada o la carpeta de spam si no lo encuentras.
+                      {t('iphone_install.emailSuccess')}
                     </p>
                   )}
                 </div>

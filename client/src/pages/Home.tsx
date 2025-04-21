@@ -11,11 +11,12 @@ import type { RegistrationData } from "@/lib/validation";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { config } from "@/config";
-import { detectDevice } from "@/lib/utils";
+import { useTranslation } from 'react-i18next';
 
 export default function Home() {
   const [, navigate] = useLocation();
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const form = useForm<RegistrationData>({
     resolver: zodResolver(registrationSchema),
@@ -41,7 +42,7 @@ export default function Home() {
       const result = await response.json();
 
       if (!response.ok || !result.success) {
-        throw new Error(result.error || 'Error en el registro');
+        throw new Error(result.error || t('errors.genericError'));
       }
 
       // Redirigir a la página de carga
@@ -51,7 +52,7 @@ export default function Home() {
       toast({
         variant: "destructive",
         title: "Error",
-        description: error instanceof Error ? error.message : "Error en el registro. Por favor intente nuevamente."
+        description: error instanceof Error ? error.message : t('home.errors.registration')
       });
     }
   }
@@ -84,17 +85,16 @@ export default function Home() {
             />
           </div>
           
-          {/* Título con tipografía mejorada - Responsivo */}
+          {/* Título con tipografía mejorada - Responsivo - Usando traducciones */}
           <div className="text-center space-y-2 sm:space-y-4 w-full max-w-4xl px-2 sm:px-4">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
               <span className="block sm:inline text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">Smart</span>{" "}
               <span className="block sm:inline text-[#10A852] drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">Passes</span>{" "}
               <span className="block sm:inline text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">-</span>{" "}
-              <span className="block sm:inline text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">Un Método Directo</span>{" "}
-              <span className="block sm:inline text-[#0A85FF] drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">para Tarjetas Digitales</span>
+              <span className="block sm:inline text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">{t('home.title')}</span>
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-white font-medium max-w-2xl mx-auto mt-2 drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">
-              Programas de Lealtad y ¡Mucho Más!
+              {t('home.subtitle')}
             </p>
           </div>
         </div>
@@ -105,7 +105,7 @@ export default function Home() {
         <Card className="glass-card w-full backdrop-blur-xl bg-white/15 border border-white/20 shadow-2xl 
                         transform hover:shadow-2xl transition-all duration-300 rounded-xl sm:rounded-2xl">
           <CardHeader className="text-center p-4 sm:pb-2">
-            <CardTitle className="text-xl sm:text-2xl font-bold text-white">Registro</CardTitle>
+            <CardTitle className="text-xl sm:text-2xl font-bold text-white">{t('home.register')}</CardTitle>
           </CardHeader>
           <CardContent className="p-4 sm:pt-4">
             <Form {...form}>
@@ -115,7 +115,7 @@ export default function Home() {
                   name="firstName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium text-white text-sm sm:text-base">Nombre</FormLabel>
+                      <FormLabel className="font-medium text-white text-sm sm:text-base">{t('home.firstName')}</FormLabel>
                       <FormControl>
                         <Input placeholder="Juan" {...field} className="h-10 sm:h-11 bg-white/40 backdrop-blur-md shadow-sm text-blue-900 font-medium" />
                       </FormControl>
@@ -128,7 +128,7 @@ export default function Home() {
                   name="lastName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium text-white text-sm sm:text-base">Apellido</FormLabel>
+                      <FormLabel className="font-medium text-white text-sm sm:text-base">{t('home.lastName')}</FormLabel>
                       <FormControl>
                         <Input placeholder="Pérez" {...field} className="h-10 sm:h-11 bg-white/40 backdrop-blur-md shadow-sm text-blue-900 font-medium" />
                       </FormControl>
@@ -141,7 +141,7 @@ export default function Home() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium text-white text-sm sm:text-base">Correo Electrónico</FormLabel>
+                      <FormLabel className="font-medium text-white text-sm sm:text-base">{t('home.email')}</FormLabel>
                       <FormControl>
                         <Input
                           type="email"
@@ -159,7 +159,7 @@ export default function Home() {
                   name="phone"
                   render={({ field: { onChange, value, ...field } }) => (
                     <FormItem>
-                      <FormLabel className="font-medium text-white text-sm sm:text-base">Número de Teléfono</FormLabel>
+                      <FormLabel className="font-medium text-white text-sm sm:text-base">{t('home.phone')}</FormLabel>
                       <FormControl>
                         <PhoneInput
                           country={'mx'}
@@ -181,7 +181,7 @@ export default function Home() {
                   className="w-full h-11 sm:h-12 text-base sm:text-lg font-medium bg-gradient-to-r from-[#0A85FF] to-[#10A852] hover:shadow-lg
                              hover:shadow-[#0A85FF]/30 transform hover:scale-[1.02] transition-all duration-300 mt-2"
                 >
-                  Registrarse
+                  {t('home.submitButton')}
                 </Button>
               </form>
             </Form>
