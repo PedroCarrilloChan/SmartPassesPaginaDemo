@@ -100,7 +100,7 @@ export default function AndroidInstall() {
   useEffect(() => {
     const processUrl = async () => {
       if (!loyaltyData?.card?.url) {
-        setError("No se encontró la URL de la tarjeta");
+        setError(t('errors.cardUrlNotFound'));
         return;
       }
 
@@ -114,26 +114,38 @@ export default function AndroidInstall() {
         console.log('Link para Android generado:', androidLink);
         setAndroidUrl(androidLink);
         setRetryCount(0);
+        setFallbackMode(false);
       } catch (error) {
         console.error('Failed to process Android URL:', error);
         const errorMessage = error instanceof Error 
           ? error.message 
-          : "Error al procesar la URL de instalación";
-        setError(errorMessage);
-        toast({
-          variant: "destructive",
-          title: `Error (Intento ${retryCount + 1})`,
-          description: errorMessage
-        });
+          : t('errors.installUrlError');
+        
+        // Si el servicio externo falla, activar modo de respaldo
+        if (retryCount >= 2) {
+          setFallbackMode(true);
+          setError(null);
+          toast({
+            title: t('android_install.fallbackModeTitle'),
+            description: t('android_install.fallbackModeDesc'),
+          });
+        } else {
+          setError(errorMessage);
+          toast({
+            variant: "destructive",
+            title: `${t('errors.error')} (${t('android_install.attempt')} ${retryCount + 1})`,
+            description: errorMessage
+          });
+        }
       } finally {
         setIsProcessing(false);
       }
     };
 
-    if (loyaltyData && !androidUrl && !isProcessing) {
+    if (loyaltyData && !androidUrl && !isProcessing && !fallbackMode) {
       processUrl();
     }
-  }, [loyaltyData, androidUrl, toast, retryCount]);
+  }, [loyaltyData, androidUrl, toast, retryCount, fallbackMode, t]);
 
   const handleRetry = () => {
     setRetryCount(prev => prev + 1);
@@ -174,55 +186,109 @@ export default function AndroidInstall() {
       <Card className="max-w-lg mx-auto shadow-2xl glass-card backdrop-blur-xl bg-white/15 border border-white/20 relative z-10 rounded-xl sm:rounded-2xl">
         <CardContent className="pt-6 space-y-5 sm:space-y-6 p-4 sm:p-6">
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-4 text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">
-            Bienvenido {loyaltyData?.firstName}
+            {t('android_install.title')} {loyaltyData?.firstName}
           </h1>
 
-          <div className="bg-white/20 backdrop-blur-md p-4 sm:p-6 rounded-lg space-y-4 sm:space-y-6 border border-white/30 shadow-lg">
-            <div className="space-y-4 sm:space-y-6">
-              <div className="space-y-2 sm:space-y-3">
-                <h2 className="text-base sm:text-lg font-bold flex items-center text-blue-900 drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
-                  <span className="bg-blue-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center mr-2 text-sm shadow-md">1</span>
-                  Primer Paso
-                </h2>
-                <p className="text-sm sm:text-base text-blue-800 bg-white/40 p-2 rounded-md shadow-sm font-medium">
-                  Toca el botón azul que dice "Instalar" como se muestra:
+          {fallbackMode ? (
+            /* Modo de respaldo cuando el servicio externo falla */
+            <div className="bg-orange-500/20 backdrop-blur-md border-l-4 border-orange-500 p-3 sm:p-4 rounded-md mb-4">
+              <div className="flex items-start sm:items-center">
+                <AlertTriangle className="h-5 w-5 text-orange-400 mr-2 flex-shrink-0 mt-0.5 sm:mt-0" />
+                <p className="text-xs sm:text-sm text-white font-medium drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">
+                  {t('android_install.fallbackInstructions')}
                 </p>
-                <div className="bg-white/5 backdrop-blur-sm p-1 rounded-lg">
-                  <img
-                    src="https://storage.googleapis.com/tapthetable/assets/1881528/images/Instalar_Android.png"
-                    alt="Paso 1 instalación Android"
-                    className="rounded-lg mx-auto max-w-[260px] sm:max-w-[320px] shadow-md"
-                    loading="lazy"
-                  />
-                </div>
               </div>
+            </div>
+          ) : (
+            <div className="bg-white/20 backdrop-blur-md p-4 sm:p-6 rounded-lg space-y-4 sm:space-y-6 border border-white/30 shadow-lg">
+              <div className="space-y-4 sm:space-y-6">
+                <div className="space-y-2 sm:space-y-3">
+                  <h2 className="text-base sm:text-lg font-bold flex items-center text-blue-900 drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
+                    <span className="bg-blue-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center mr-2 text-sm shadow-md">1</span>
+                    {t('android_install.step1Title')}
+                  </h2>
+                  <p className="text-sm sm:text-base text-blue-800 bg-white/40 p-2 rounded-md shadow-sm font-medium">
+                    {fallbackMode ? t('android_install.step1Instruction') : "Toca el botón azul que dice \"Instalar\" como se muestra:"}
+                  </p>
+                  {!fallbackMode && (
+                    <div className="bg-white/5 backdrop-blur-sm p-1 rounded-lg">
+                      <img
+                        src="https://storage.googleapis.com/tapthetable/assets/1881528/images/Instalar_Android.png"
+                        alt="Paso 1 instalación Android"
+                        className="rounded-lg mx-auto max-w-[260px] sm:max-w-[320px] shadow-md"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
+                </div>
 
-              <div className="space-y-2 sm:space-y-3 pt-2">
-                <h2 className="text-base sm:text-lg font-bold flex items-center text-blue-900 drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
-                  <span className="bg-blue-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center mr-2 text-sm shadow-md">2</span>
-                  Segundo Paso
-                </h2>
-                <p className="text-sm sm:text-base text-blue-800 bg-white/40 p-2 rounded-md shadow-sm font-medium">
-                  Luego, toca el botón azul que dice "Continuar":
-                </p>
-                <div className="bg-white/5 backdrop-blur-sm p-1 rounded-lg">
-                  <img
-                    src="https://storage.googleapis.com/tapthetable/assets/1881528/images/Continuar_Android.png"
-                    alt="Paso 2 instalación Android"
-                    className="rounded-lg mx-auto max-w-[260px] sm:max-w-[320px] shadow-md"
-                    loading="lazy"
-                  />
+                <div className="space-y-2 sm:space-y-3 pt-2">
+                  <h2 className="text-base sm:text-lg font-bold flex items-center text-blue-900 drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
+                    <span className="bg-blue-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center mr-2 text-sm shadow-md">2</span>
+                    {t('android_install.step2Title')}
+                  </h2>
+                  <p className="text-sm sm:text-base text-blue-800 bg-white/40 p-2 rounded-md shadow-sm font-medium">
+                    {fallbackMode ? t('android_install.step2Instruction') : "Luego, toca el botón azul que dice \"Continuar\":"}
+                  </p>
+                  {!fallbackMode && (
+                    <div className="bg-white/5 backdrop-blur-sm p-1 rounded-lg">
+                      <img
+                        src="https://storage.googleapis.com/tapthetable/assets/1881528/images/Continuar_Android.png"
+                        alt="Paso 2 instalación Android"
+                        className="rounded-lg mx-auto max-w-[260px] sm:max-w-[320px] shadow-md"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
           <div className="space-y-4">
             <p className="text-center text-sm sm:text-base text-white font-medium">
-              ¡Toca el botón para comenzar! 👇
+              {fallbackMode ? t('android_install.callToAction') : "¡Toca el botón para comenzar! 👇"}
             </p>
 
-            {error ? (
+            {fallbackMode ? (
+              /* Modo de respaldo - solo envío por correo */
+              <div className="space-y-4">
+                <div className="border-t border-white/10 pt-5 sm:pt-6">
+                  <p className="text-xs sm:text-sm text-center text-white/80 mb-3 sm:mb-4">
+                    {t('android_install.emailOption')}
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                    <Input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder={t('android_install.emailPlaceholder')}
+                      className="h-10 sm:h-11 bg-white/30 backdrop-blur-md text-gray-800 border-white/30 shadow-sm"
+                    />
+                    <Button
+                      onClick={handleSendEmail}
+                      disabled={isSendingEmail || !email}
+                      className="h-10 sm:h-11 min-w-[90px] sm:min-w-[100px] text-sm sm:text-base
+                                bg-gradient-to-r from-orange-500 to-red-600 text-white"
+                    >
+                      {isSendingEmail ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <>
+                          <Send className="h-4 w-4 mr-2" />
+                          {t('android_install.fallbackButton')}
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                  {emailSent && (
+                    <p className="text-xs sm:text-sm text-green-300 mt-2 text-center p-2 bg-green-500/10 rounded-md backdrop-blur-sm">
+                      {t('android_install.emailSuccess')}
+                    </p>
+                  )}
+                </div>
+              </div>
+            ) : error ? (
               <div className="space-y-4">
                 <p className="text-sm text-red-300 text-center px-4 bg-red-500/10 py-2 rounded-md backdrop-blur-sm">
                   {error}
@@ -232,7 +298,7 @@ export default function AndroidInstall() {
                             text-white font-medium transition-all duration-300 hover:shadow-lg"
                   onClick={handleRetry}
                 >
-                  Intentar nuevamente
+                  {t('android_install.retryButton')}
                 </Button>
               </div>
             ) : (
@@ -246,11 +312,11 @@ export default function AndroidInstall() {
                   {isProcessing ? (
                     <>
                       <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                      Procesando...
+                      {t('android_install.processingButton')}
                     </>
                   ) : (
                     <>
-                      Obtener mi tarjeta
+                      {t('android_install.getCardButton')}
                       <ChevronRight className="ml-2 h-5 w-5" />
                     </>
                   )}
@@ -264,7 +330,7 @@ export default function AndroidInstall() {
                       </div>
                     </div>
                     <p className="text-xs sm:text-sm font-medium text-center text-white/80">
-                      ¡También puedes escanear este código QR con tu dispositivo Android!
+                      {t('android_install.qrInstructions')}
                     </p>
                     <div className="p-3 sm:p-4 bg-white rounded-lg sm:rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105">
                       <QRCodeSVG 
@@ -280,14 +346,14 @@ export default function AndroidInstall() {
                 {/* Sección de envío por correo */}
                 <div className="border-t border-white/10 pt-5 sm:pt-6 mt-6 sm:mt-8">
                   <p className="text-xs sm:text-sm text-center text-white/80 mb-3 sm:mb-4">
-                    ¿Prefieres recibir las instrucciones por correo electrónico?
+                    {t('android_install.emailOption')}
                   </p>
                   <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                     <Input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="correo@ejemplo.com"
+                      placeholder={t('android_install.emailPlaceholder')}
                       className="h-10 sm:h-11 bg-white/30 backdrop-blur-md text-gray-800 border-white/30 shadow-sm"
                     />
                     <Button

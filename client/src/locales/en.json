@@ -78,5 +78,26 @@
   "notifications": {
     "emailSent": "Email Sent",
     "emailSentDesc": "Instructions have been sent to your email address."
+  },
+  "android_install": {
+    "title": "Welcome",
+    "fallbackModeTitle": "Alternative mode activated",
+    "fallbackModeDesc": "We activated the alternative installation mode for Android",
+    "attempt": "Attempt",
+    "step1Title": "First Step",
+    "step1Instruction": "Download the application from the link we'll send you by email",
+    "step2Title": "Second Step",
+    "step2Instruction": "Install the application from your Android device",
+    "callToAction": "We'll send the instructions to your email! 👇",
+    "processingButton": "Processing...",
+    "getCardButton": "Get my card",
+    "retryButton": "Try again",
+    "qrInstructions": "You can also scan this QR code with your Android!",
+    "emailOption": "We'll send the installation instructions to your email:",
+    "emailPlaceholder": "email@example.com",
+    "sendButton": "Send",
+    "emailSuccess": "✅ Email sent successfully. Please check your inbox or spam folder if you don't find it.",
+    "fallbackInstructions": "The automatic installation service is temporarily unavailable. We'll send you detailed instructions by email.",
+    "fallbackButton": "Send instructions by email"
   }
 }

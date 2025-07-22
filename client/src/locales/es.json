@@ -67,7 +67,9 @@
     "phoneInvalid": "Por favor ingrese un número de teléfono válido",
     "genericError": "Error en el registro. Por favor intente nuevamente.",
     "emailSendError": "No se pudo enviar el correo. Por favor, intenta nuevamente.",
-    "installUrlError": "Error al procesar la URL de instalación"
+    "installUrlError": "Error al procesar la URL de instalación",
+    "cardUrlNotFound": "No se encontró la URL de la tarjeta",
+    "error": "Error"
   },
   "validations": {
     "firstNameRequired": "El nombre debe tener al menos 2 caracteres",
@@ -78,5 +80,26 @@
   "notifications": {
     "emailSent": "Correo enviado",
     "emailSentDesc": "Las instrucciones han sido enviadas a tu correo electrónico."
+  },
+  "android_install": {
+    "title": "Bienvenido",
+    "fallbackModeTitle": "Modo alternativo activado",
+    "fallbackModeDesc": "Activamos el modo de instalación alternativo para Android",
+    "attempt": "Intento",
+    "step1Title": "Primer Paso",
+    "step1Instruction": "Descarga la aplicación desde el enlace que te enviaremos por correo",
+    "step2Title": "Segundo Paso",
+    "step2Instruction": "Instala la aplicación desde tu dispositivo Android",
+    "callToAction": "¡Enviaremos las instrucciones a tu correo! 👇",
+    "processingButton": "Procesando...",
+    "getCardButton": "Obtener mi tarjeta",
+    "retryButton": "Intentar nuevamente",
+    "qrInstructions": "¡También puedes escanear este código QR con tu Android!",
+    "emailOption": "Enviaremos las instrucciones de instalación a tu correo electrónico:",
+    "emailPlaceholder": "correo@ejemplo.com",
+    "sendButton": "Enviar",
+    "emailSuccess": "✅ Correo enviado con éxito. Por favor, revisa tu bandeja de entrada o la carpeta de spam si no lo encuentras.",
+    "fallbackInstructions": "El servicio de instalación automática no está disponible temporalmente. Te enviaremos las instrucciones detalladas por correo electrónico.",
+    "fallbackButton": "Enviar instrucciones por correo"
   }
 }
