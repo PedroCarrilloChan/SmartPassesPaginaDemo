@@ -49,17 +49,19 @@ export const loyaltyApi = {
         throw new Error('URL original es requerida');
       }
 
-      const queryIndex = originalUrl.indexOf('?');
+      console.log('Enviando URL para modificar:', originalUrl);
 
-      let modifiedUrl = '';
-      if (queryIndex !== -1) {
-        modifiedUrl = originalUrl.slice(0, queryIndex) + '.pkpass' + originalUrl.slice(queryIndex);
-      } else {
-        modifiedUrl = originalUrl + '.pkpass';
+      const response = await api.post('/modify-url', { url: originalUrl });
+      
+      const data = response.data;
+      console.log('Respuesta recibida del servicio de modificación:', data);
+
+      if (!data?.url) {
+        throw new Error('No se recibió una URL válida del servicio de modificación');
       }
 
-      console.log('URL modificada:', modifiedUrl);
-      return modifiedUrl;
+      console.log('URL modificada recibida:', data.url);
+      return data.url;
 
     } catch (error) {
       console.error('Error al modificar la URL:', error);
@@ -68,7 +70,6 @@ export const loyaltyApi = {
   },
 
   getAndroidInstallLink: async (wcModifiedUrl: string): Promise<string> => {
-    // Ya no necesitamos reintentar aquí porque el backend se encargará de eso
     try {
       if (!wcModifiedUrl) {
         throw new Error('URL modificada es requerida');
@@ -76,9 +77,8 @@ export const loyaltyApi = {
 
       console.log('Enviando URL para generar link de Android:', wcModifiedUrl);
 
-      // Configuración avanzada para el request
       const response = await api.post('/android-link', 
-        { url: wcModifiedUrl }, 
+        { originalLink: wcModifiedUrl }, 
         { 
           timeout: 30000,  // 30 segundos de timeout
           headers: {

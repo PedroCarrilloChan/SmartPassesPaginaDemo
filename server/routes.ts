@@ -125,8 +125,8 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
-  // Android link generation proxy endpoint with retries
-  app.post('/api/android-link', async (req, res) => {
+  // URL modification endpoint using SmartPasses service
+  app.post('/api/modify-url', async (req, res) => {
     const { url } = req.body;
 
     if (!url) {
@@ -135,83 +135,81 @@ export function registerRoutes(app: Express): Server {
       });
     }
 
-    // Configuración de reintentos
-    const maxRetries = 3;
-    let retryCount = 0;
-    let lastError = null;
+    try {
+      console.log('Modificando URL con SmartPasses:', url);
 
-    while (retryCount < maxRetries) {
-      try {
-        console.log(`Proxy: Intento ${retryCount + 1}/${maxRetries} - Iniciando request a servicio Android con URL:`, url);
+      const response = await fetch('https://formatodescarga.smartpasses.io/modifyUrl', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          url: url
+        })
+      });
 
-        // Usando AbortController para manejar timeout manualmente
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 15000);
-        
-        const response = await fetch(SERVER_CONFIG.externalServices.androidInstallUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          body: JSON.stringify({
-            originalLink: url
-          }),
-          signal: controller.signal
-        });
-        
-        clearTimeout(timeoutId);
-
-        console.log('Proxy: Status de respuesta:', response.status);
-
-        // Si la respuesta no es exitosa, intentar leer el cuerpo como texto para depuración
-        if (!response.ok) {
-          let errorText = '';
-          try {
-            errorText = await response.text();
-          } catch (e) {
-            errorText = 'No se pudo leer el cuerpo de la respuesta';
-          }
-          
-          console.error('Proxy: Error en respuesta:', errorText);
-          throw new Error(`Error del servidor: ${response.status} ${response.statusText}`);
-        }
-
-        // Intenta parsear la respuesta como JSON
-        let data;
-        try {
-          data = await response.json();
-        } catch (e) {
-          console.error('Proxy: Error al parsear respuesta JSON:', e);
-          throw new Error('Error al parsear la respuesta del servidor');
-        }
-
-        console.log('Proxy: Datos de respuesta:', data);
-
-        // Verificar que la respuesta tenga la estructura esperada
-        if (!data || typeof data !== 'object' || !('passwalletLink' in data)) {
-          throw new Error('Respuesta del servidor incompleta o malformada');
-        }
-
-        return res.json(data);
-      } catch (error) {
-        console.error(`Proxy: Error en intento ${retryCount + 1}/${maxRetries}:`, error);
-        lastError = error;
-        
-        // Si no es el último intento, esperar antes de reintentar con backoff exponencial
-        if (retryCount < maxRetries - 1) {
-          const backoffMs = Math.pow(2, retryCount) * 1000;
-          console.log(`Proxy: Esperando ${backoffMs}ms antes del siguiente intento...`);
-          await new Promise(resolve => setTimeout(resolve, backoffMs));
-          retryCount++;
-        } else {
-          // Último intento fallido, devolver error
-          console.error('Proxy: Todos los intentos fallidos');
-          return res.status(500).json({ 
-            error: lastError instanceof Error ? lastError.message : 'Error al generar link para Android después de múltiples intentos' 
-          });
-        }
+      if (!response.ok) {
+        throw new Error(`Error del servicio de modificación: ${response.status} ${response.statusText}`);
       }
+
+      const data = await response.json() as { url?: string };
+      console.log('URL modificada recibida:', data);
+
+      if (!data?.url) {
+        throw new Error('La respuesta del servicio no contiene una URL válida');
+      }
+
+      res.json({ url: data.url });
+    } catch (error) {
+      console.error('Error al modificar URL:', error);
+      res.status(500).json({ 
+        error: error instanceof Error ? error.message : 'Error al modificar la URL' 
+      });
+    }
+  });
+
+  // Android link generation using SmartPasses service
+  app.post('/api/android-link', async (req, res) => {
+    const { originalLink } = req.body;
+
+    if (!originalLink) {
+      return res.status(400).json({ 
+        error: 'originalLink es requerida' 
+      });
+    }
+
+    try {
+      console.log('Generando link de Android con SmartPasses:', originalLink);
+
+      const response = await fetch('https://linkandroid.smartpasses.io/generateLink', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          originalLink: originalLink
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error del servicio de Android: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json() as { passwalletLink?: string };
+      console.log('Link de Android generado:', data);
+
+      if (!data?.passwalletLink) {
+        throw new Error('La respuesta del servicio no contiene un passwalletLink válido');
+      }
+
+      res.json({ passwalletLink: data.passwalletLink });
+    } catch (error) {
+      console.error('Error al generar link de Android:', error);
+      res.status(500).json({ 
+        error: error instanceof Error ? error.message : 'Error al generar link para Android' 
+      });
     }
   });
   app.post('/api/register', async (req, res) => {
