@@ -5,11 +5,13 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { loyaltyApi } from "@/lib/api";
-import { Loader2, ChevronRight, ScanLine, Send } from "lucide-react";
+import { Loader2, ChevronRight, ScanLine, Send, AlertTriangle } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
+import { useTranslation } from 'react-i18next';
 
 export default function AndroidInstall() {
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [androidUrl, setAndroidUrl] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -17,6 +19,7 @@ export default function AndroidInstall() {
   const [emailSent, setEmailSent] = useState(false);
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [email, setEmail] = useState<string>("");
+  const [fallbackMode, setFallbackMode] = useState(false);
 
   const { data: loyaltyData, isLoading: isDataLoading } = useQuery({
     queryKey: ["/api/loyalty-data"],
