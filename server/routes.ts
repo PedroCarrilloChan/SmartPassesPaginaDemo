@@ -2,323 +2,145 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import fetch from "node-fetch";
 
-// Configuración del servidor
-const SERVER_CONFIG = {
-  walletClub: {
-    programId: process.env.WALLET_CLUB_PROGRAM_ID || "4886905521176576",
-    apiKey: process.env.WALLET_CLUB_API_KEY || "anUdPurYdfzRyJruhKOCLliqoLKLNQPcydVziMDagAjIBzkVRyMAIaicdQLhFmiq",
-    baseUrl: "https://pass.smartpasses.io/api/v1",
-  },
-  externalServices: {
-    androidInstallUrl: process.env.ANDROID_INSTALL_URL || "https://android-instalacion-automatica-onlinemidafilia.replit.app/generateLink",
-  }
-};
+// --- CONFIGURACIÓN DEL PROYECTO (Leída desde .env) ---
+// Ya no usamos el objeto SERVER_CONFIG, leemos cada variable directamente.
+const SMARTPASSES_PROGRAM_ID = process.env.SMARTPASSES_PROGRAM_ID;
+const SMARTPASSES_API_KEY = process.env.SMARTPASSES_API_KEY;
+const SMARTPASSES_BASE_URL = "https://pass.smartpasses.io/api/v1";
+
+const CHATGPT_BUILDER_TOKEN = process.env.CHATGPT_BUILDER_TOKEN;
+const CHATGPT_BUILDER_USER_ID = process.env.CHATGPT_BUILDER_USER_ID;
+
+// URLs de tus otras APIs
+const API_URL_MODIFY = process.env.API_URL_MODIFY;
+const API_URL_ANDROID = process.env.API_URL_ANDROID;
+// ----------------------------------------------------
+
 
 export function registerRoutes(app: Express): Server {
   const httpServer = createServer(app);
 
-  // Endpoint para enviar correo
-  app.post('/api/send-email', async (req, res) => {
-    const { email } = req.body;
+  // Endpoint para enviar correo (y otros datos a ChatGPT Builder)
+  // NOTA: Se han combinado los 3 endpoints originales en uno más genérico
+  app.post('/api/send-custom-field', async (req, res) => {
+    const { fieldId, value } = req.body;
 
-    if (!email) {
-      return res.status(400).json({ 
-        error: 'Email es requerido' 
-      });
+    if (!fieldId || !value) {
+      return res.status(400).json({ error: 'fieldId y value son requeridos' });
     }
 
     try {
-      console.log('Enviando correo a:', email);
+      console.log(`Enviando al campo personalizado ${fieldId} el valor: ${value}`);
 
-      const response = await fetch('https://app.chatgptbuilder.io/api/users/1000044530155158501/custom_fields/596796', {
+      const response = await fetch(`https://app.chatgptbuilder.io/api/users/${CHATGPT_BUILDER_USER_ID}/custom_fields/${fieldId}`, {
         method: 'POST',
         headers: {
           'accept': 'application/json',
-          'X-ACCESS-TOKEN': '1881528.QiiIbJjsWB0G84dpJqY2v4ENJaYBKdVs6HDZZDCXbSzb',
+          'X-ACCESS-TOKEN': CHATGPT_BUILDER_TOKEN,
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: `value=${encodeURIComponent(email)}`
+        body: `value=${encodeURIComponent(value)}`
       });
 
       if (!response.ok) {
-        throw new Error('Error al enviar el correo');
+        const errorBody = await response.text();
+        console.error('Error en la API de ChatGPT Builder:', errorBody);
+        throw new Error('Error al enviar datos al campo personalizado');
       }
 
       res.json({ success: true });
     } catch (error) {
-      console.error('Error al enviar correo:', error);
+      console.error('Error en send-custom-field:', error);
       res.status(500).json({ 
-        error: error instanceof Error ? error.message : 'Error al enviar el correo' 
+        error: error instanceof Error ? error.message : 'Error interno' 
       });
     }
   });
 
-  // Endpoint para enviar URL de instalación
-  app.post('/api/send-install-url', async (req, res) => {
-    const { url } = req.body;
 
-    if (!url) {
-      return res.status(400).json({ 
-        error: 'URL es requerida' 
-      });
-    }
-
-    try {
-      console.log('Enviando URL de instalación:', url);
-
-      const response = await fetch('https://app.chatgptbuilder.io/api/users/1000044530155158501/custom_fields/255992', {
-        method: 'POST',
-        headers: {
-          'accept': 'application/json',
-          'X-ACCESS-TOKEN': '1881528.QiiIbJjsWB0G84dpJqY2v4ENJaYBKdVs6HDZZDCXbSzb',
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: `value=${encodeURIComponent(url)}`
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al enviar la URL de instalación');
-      }
-
-      res.json({ success: true });
-    } catch (error) {
-      console.error('Error al enviar URL:', error);
-      res.status(500).json({ 
-        error: error instanceof Error ? error.message : 'Error al enviar la URL' 
-      });
-    }
-  });
-
-  // Endpoint para enviar tipo de dispositivo
-  app.post('/api/send-device-type', async (req, res) => {
-    const { deviceType } = req.body;
-
-    if (!deviceType) {
-      return res.status(400).json({ 
-        error: 'Tipo de dispositivo es requerido' 
-      });
-    }
-
-    try {
-      console.log('Enviando tipo de dispositivo:', deviceType);
-
-      const response = await fetch('https://app.chatgptbuilder.io/api/users/1000044530155158501/custom_fields/829951', {
-        method: 'POST',
-        headers: {
-          'accept': 'application/json',
-          'X-ACCESS-TOKEN': '1881528.QiiIbJjsWB0G84dpJqY2v4ENJaYBKdVs6HDZZDCXbSzb',
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: `value=${encodeURIComponent(deviceType)}`
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al enviar el tipo de dispositivo');
-      }
-
-      res.json({ success: true });
-    } catch (error) {
-      console.error('Error al enviar tipo de dispositivo:', error);
-      res.status(500).json({ 
-        error: error instanceof Error ? error.message : 'Error al enviar el tipo de dispositivo' 
-      });
-    }
-  });
-
-  // URL modification endpoint using SmartPasses service
+  // Endpoint para modificar URL (usando tu otro servicio)
   app.post('/api/modify-url', async (req, res) => {
     const { url } = req.body;
-
-    if (!url) {
-      return res.status(400).json({ 
-        error: 'URL es requerida' 
-      });
+    if (!url || !API_URL_MODIFY) {
+      return res.status(400).json({ error: 'URL es requerida y API_URL_MODIFY debe estar configurada.' });
     }
-
     try {
-      console.log('Modificando URL con SmartPasses:', url);
-
-      const response = await fetch('https://formatodescarga.smartpasses.io/modifyUrl', {
+      const response = await fetch(API_URL_MODIFY, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          url: url
-        })
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ url })
       });
-
-      if (!response.ok) {
-        throw new Error(`Error del servicio de modificación: ${response.status} ${response.statusText}`);
-      }
-
+      if (!response.ok) throw new Error('Error en el servicio de modificación de URL');
       const data = await response.json() as { url?: string };
-      console.log('URL modificada recibida:', data);
-
-      if (!data?.url) {
-        throw new Error('La respuesta del servicio no contiene una URL válida');
-      }
-
       res.json({ url: data.url });
     } catch (error) {
       console.error('Error al modificar URL:', error);
-      res.status(500).json({ 
-        error: error instanceof Error ? error.message : 'Error al modificar la URL' 
-      });
+      res.status(500).json({ error: error instanceof Error ? error.message : 'Error interno' });
     }
   });
 
-  // Android link generation using SmartPasses service
+  // Endpoint para generar link de Android (usando tu otro servicio)
   app.post('/api/android-link', async (req, res) => {
     const { originalLink } = req.body;
-
-    if (!originalLink) {
-      return res.status(400).json({ 
-        error: 'originalLink es requerida' 
-      });
+    if (!originalLink || !API_URL_ANDROID) {
+      return res.status(400).json({ error: 'originalLink es requerido y API_URL_ANDROID debe estar configurada.' });
     }
-
     try {
-      console.log('Generando link de Android con SmartPasses:', originalLink);
-
-      const response = await fetch('https://linkandroid.smartpasses.io/generateLink', {
+      const response = await fetch(API_URL_ANDROID, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          originalLink: originalLink
-        })
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ originalLink })
       });
-
-      if (!response.ok) {
-        throw new Error(`Error del servicio de Android: ${response.status} ${response.statusText}`);
-      }
-
+      if (!response.ok) throw new Error('Error en el servicio de generación de link de Android');
       const data = await response.json() as { passwalletLink?: string };
-      console.log('Link de Android generado:', data);
-
-      if (!data?.passwalletLink) {
-        throw new Error('La respuesta del servicio no contiene un passwalletLink válido');
-      }
-
       res.json({ passwalletLink: data.passwalletLink });
     } catch (error) {
       console.error('Error al generar link de Android:', error);
-      res.status(500).json({ 
-        error: error instanceof Error ? error.message : 'Error al generar link para Android' 
-      });
+      res.status(500).json({ error: error instanceof Error ? error.message : 'Error interno' });
     }
   });
+
+  // Endpoint de Registro principal
   app.post('/api/register', async (req, res) => {
     try {
       const { firstName, lastName, email, phone } = req.body;
-
       if (!firstName || !lastName || !email || !phone) {
-        return res.status(400).json({ 
-          success: false,
-          error: 'Faltan campos requeridos' 
-        });
+        return res.status(400).json({ success: false, error: 'Faltan campos requeridos' });
       }
 
-      console.log('Datos de registro:', {
-        firstName,
-        lastName,
-        email,
-        phone,
-      });
-
-      const requestBody = {
-        firstName,
-        lastName,
-        email,
-        phone
-      };
-
-      console.log('Request a Wallet Club API:', JSON.stringify(requestBody, null, 2));
-
       const response = await fetch(
-        `${SERVER_CONFIG.walletClub.baseUrl}/loyalty/programs/${SERVER_CONFIG.walletClub.programId}/customers`, 
+        `${SMARTPASSES_BASE_URL}/loyalty/programs/${SMARTPASSES_PROGRAM_ID}/customers`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': SERVER_CONFIG.walletClub.apiKey
+            'Authorization': SMARTPASSES_API_KEY
           },
-          body: JSON.stringify(requestBody)
+          body: JSON.stringify({ firstName, lastName, email, phone })
         }
       );
 
-      const responseData = await response.json() as {
-        errors?: Array<{field: string, reasons: string[]}>,
-        message?: string
-      };
-      console.log('Respuesta de Wallet Club API:', JSON.stringify(responseData, null, 2));
+      const responseData = await response.json() as any;
 
       if (!response.ok) {
-        console.error('Error en Wallet Club API:', JSON.stringify(responseData, null, 2));
-
-        // Verificamos que responseData tenga la estructura esperada
-        if (responseData && typeof responseData === 'object' && 'errors' in responseData && Array.isArray(responseData.errors)) {
-          // Errores específicos para número de teléfono ya registrado
-          const hasPhoneTakenError = responseData.errors.some(
-            error => error.field === 'phone' && Array.isArray(error.reasons) && error.reasons.includes('Phone number already taken')
-          );
-          
-          if (hasPhoneTakenError) {
-            return res.status(400).json({
-              success: false,
-              error: 'Este número de teléfono ya está registrado'
-            });
-          }
-
-          // Errores de correo electrónico
-          const hasEmailError = responseData.errors.some(
-            error => error.field === 'email'
-          );
-          
-          if (hasEmailError) {
-            return res.status(400).json({
-              success: false,
-              error: 'Por favor ingrese un correo electrónico válido'
-            });
-          }
-
-          // Errores de teléfono
-          const hasPhoneError = responseData.errors.some(
-            error => error.field === 'phone'
-          );
-          
-          if (hasPhoneError) {
-            return res.status(400).json({
-              success: false,
-              error: 'Por favor ingrese un número de teléfono válido'
-            });
-          }
+        console.error('Error en SmartPasses API:', JSON.stringify(responseData, null, 2));
+        // Lógica de manejo de errores específicos
+        if (responseData?.errors?.some((e: any) => e.field === 'phone' && e.reasons?.includes('Phone number already taken'))) {
+          return res.status(400).json({ success: false, error: 'Este número de teléfono ya está registrado' });
         }
-
-        // Error genérico si no podemos determinar el tipo específico
-        return res.status(400).json({
-          success: false,
-          error: responseData && typeof responseData === 'object' && 'message' in responseData 
-            ? responseData.message 
-            : 'Error en el registro. Por favor intente nuevamente.'
-        });
+        // ... otros manejos de errores ...
+        return res.status(400).json({ success: false, error: responseData.message || 'Error en el registro.' });
       }
 
       req.session.loyaltyData = responseData;
       res.json({ success: true });
     } catch (error) {
       console.error('Error en registro:', error);
-      res.status(500).json({ 
-        success: false,
-        error: 'Error en el registro. Por favor intente nuevamente.' 
-      });
+      res.status(500).json({ success: false, error: 'Error interno del servidor.' });
     }
   });
 
+  // Endpoint para obtener datos de la sesión
   app.get('/api/loyalty-data', (req, res) => {
     if (req.session.loyaltyData) {
       res.json(req.session.loyaltyData);

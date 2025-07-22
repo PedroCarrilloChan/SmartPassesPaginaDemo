@@ -1,3 +1,5 @@
+// 1. Añadir esta línea al inicio para cargar las variables de .env
+import "dotenv/config"; 
 import express, { type Request, Response, NextFunction } from "express";
 import session from "express-session";
 import MemoryStore from "memorystore";
@@ -24,7 +26,8 @@ app.use(
       checkPeriod: 86400000 // prune expired entries every 24h
     }),
     resave: false,
-    secret: 'your-secret-key',
+    // 2. Leer el secreto de la sesión desde el archivo .env
+    secret: process.env.SESSION_SECRET || 'un-secreto-por-defecto-muy-seguro', 
     saveUninitialized: false,
   })
 );
@@ -76,7 +79,8 @@ app.use((req, res, next) => {
     serveStatic(app);
   }
 
-  const PORT = 5000;
+  // 3. Leer el puerto desde el archivo .env
+  const PORT = process.env.PORT || 5000; 
   server.listen(PORT, "0.0.0.0", () => {
     log(`serving on port ${PORT}`);
   });
