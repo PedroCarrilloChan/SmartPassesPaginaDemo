@@ -89,7 +89,8 @@ export default function Home() {
           <div className="text-center space-y-2 sm:space-y-4 w-full max-w-4xl px-2 sm:px-4">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
               <span className="block sm:inline text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">Smart</span>{" "}
-              <span className="block sm:inline text-[#10A852] drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">Passes</span>{" "}
+              <span className="block sm:inline text-[#10A852] drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">Passes
+              </span>{" "}
               <span className="block sm:inline text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">-</span>{" "}
               <span className="block sm:inline text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">{t('home.title')}</span>
             </h1>
